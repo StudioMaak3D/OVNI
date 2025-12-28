@@ -1,0 +1,399 @@
+/* Technical Monochrome Map Styling */
+
+.technical-map {
+  font-family: 'JetBrains Mono', monospace;
+  background: #000000;
+  color: #FFFFFF;
+}
+
+/* Terminal-style text with subtle glow */
+.terminal-text {
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
+}
+
+/* Wireframe border styling */
+.wireframe-border {
+  border: 1px solid #CCCCCC;
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+}
+
+.wireframe-border-thick {
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+}
+
+/* Technical grid lines */
+.grid-line {
+  stroke: #FFFFFF;
+  stroke-width: 0.5;
+  opacity: 0.15;
+}
+
+/* Corner brackets (decorative) */
+.corner-bracket {
+  stroke: #FFFFFF;
+  stroke-width: 2;
+  fill: none;
+  opacity: 0.6;
+}
+
+/* Scanline animation (optional, subtle) */
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
+}
+
+.scanline {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(
+    transparent,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent
+  );
+  animation: scanline 6s linear infinite;
+  pointer-events: none;
+  z-index: 50;
+}
+
+/* Disable scanline for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .scanline {
+    animation: none;
+    display: none;
+  }
+}
+
+/* Terminal-style button */
+.terminal-button {
+  font-family: 'JetBrains Mono', monospace;
+  background: transparent;
+  border: 1px solid #CCCCCC;
+  color: #FFFFFF;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.875rem;
+}
+
+.terminal-button:hover {
+  background: #FFFFFF;
+  color: #000000;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.terminal-button:active {
+  transform: scale(0.98);
+}
+
+.terminal-button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* Terminal-style input */
+.terminal-input {
+  font-family: 'JetBrains Mono', monospace;
+  background: #000000;
+  border: 1px solid #666666;
+  color: #FFFFFF;
+  padding: 0.5rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.terminal-input:focus {
+  border-color: #FFFFFF;
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+}
+
+/* Terminal-style checkbox */
+.terminal-checkbox {
+  appearance: none;
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid #CCCCCC;
+  background: #000000;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.terminal-checkbox:checked {
+  background: #FFFFFF;
+}
+
+.terminal-checkbox:checked::after {
+  content: 'X';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #000000;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.terminal-checkbox:hover {
+  border-color: #FFFFFF;
+}
+
+/* Blinking cursor effect */
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.blinking-cursor::after {
+  content: '_';
+  animation: blink 1s infinite;
+  margin-left: 0.25rem;
+}
+
+/* Phosphor glow effect (subtle) */
+.phosphor-glow {
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+/* Classification badges with technical styling */
+.classification-badge {
+  font-family: 'JetBrains Mono', monospace;
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid currentColor;
+  font-size: 0.75rem;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.classification-A {
+  color: #86efac;
+  border-color: #86efac;
+}
+
+.classification-B {
+  color: #fde047;
+  border-color: #fde047;
+}
+
+.classification-C {
+  color: #c4b5fd;
+  border-color: #c4b5fd;
+}
+
+.classification-D {
+  color: #fca5a5;
+  border-color: #fca5a5;
+}
+
+.classification-D1 {
+  color: #fb923c;
+  border-color: #fb923c;
+}
+
+.classification-NC {
+  color: #a1a1aa;
+  border-color: #a1a1aa;
+}
+
+/* Tooltip styling */
+.map-tooltip {
+  position: absolute;
+  background: #000000;
+  border: 2px solid #FFFFFF;
+  padding: 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: #FFFFFF;
+  pointer-events: none;
+  z-index: 100;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+  min-width: 250px;
+  line-height: 1.6;
+}
+
+/* Legend styling */
+.map-legend {
+  background: rgba(0, 0, 0, 0.9);
+  border: 1px solid #CCCCCC;
+  padding: 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+}
+
+.legend-gradient {
+  width: 100%;
+  height: 20px;
+  background: linear-gradient(
+    to right,
+    #111111,
+    #333333,
+    #555555,
+    #777777,
+    #999999,
+    #BBBBBB
+  );
+  border: 1px solid #666666;
+}
+
+/* Map container */
+.map-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background: #000000;
+  overflow: hidden;
+}
+
+/* Control panel styling */
+.control-panel {
+  background: rgba(0, 0, 0, 0.95);
+  border: 1px solid #666666;
+  padding: 1.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.875rem;
+}
+
+.control-panel-header {
+  font-size: 1rem;
+  font-weight: bold;
+  letter-spacing: 0.15em;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #666666;
+  text-transform: uppercase;
+}
+
+/* Detail panel */
+.detail-panel {
+  background: #000000;
+  border-left: 2px solid #FFFFFF;
+  height: 100vh;
+  overflow-y: auto;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.detail-panel-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid #666666;
+  position: sticky;
+  top: 0;
+  background: #000000;
+  z-index: 10;
+}
+
+/* Scrollbar styling for terminal aesthetic */
+.detail-panel::-webkit-scrollbar {
+  width: 8px;
+}
+
+.detail-panel::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+.detail-panel::-webkit-scrollbar-thumb {
+  background: #666666;
+  border: 1px solid #333333;
+}
+
+.detail-panel::-webkit-scrollbar-thumb:hover {
+  background: #999999;
+}
+
+/* Loading spinner - terminal style */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.terminal-spinner {
+  border: 2px solid #333333;
+  border-top: 2px solid #FFFFFF;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+/* Case count indicator */
+.case-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.1em;
+}
+
+/* Navigation links */
+.nav-link {
+  font-family: 'JetBrains Mono', monospace;
+  color: #FFFFFF;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.875rem;
+}
+
+.nav-link:hover {
+  border-color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.nav-link-active {
+  border-color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Utility classes */
+.text-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.border-tech {
+  border: 1px solid #666666;
+}
+
+.border-tech-bright {
+  border: 1px solid #CCCCCC;
+}
+
+.bg-tech-dark {
+  background: #000000;
+}
+
+.bg-tech-darker {
+  background: #0a0a0a;
+}
+
+.text-tech-white {
+  color: #FFFFFF;
+}
+
+.text-tech-grey {
+  color: #999999;
+}
+
+.text-tech-dim {
+  color: #666666;
+}
