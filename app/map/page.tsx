@@ -96,6 +96,9 @@ export default function MapPage() {
         </div>
         <div className="flex gap-4">
           <Link href="/" className="nav-link">
+            [DASHBOARD]
+          </Link>
+          <Link href="/map/list" className="nav-link">
             [LIST VIEW]
           </Link>
           <Link href="/map" className="nav-link nav-link-active">

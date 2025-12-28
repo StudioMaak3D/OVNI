@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import { getClassificationLabel, getClassificationColor } from '@/lib/mapUtils';
+import '@/styles/technical-map.css';
 
 export type SearchFilters = {
   query: string;
@@ -78,80 +80,113 @@ export default function SearchInterface({
     });
   };
 
-  return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
-      <form onSubmit={handleSubmit}>
-        {/* Barre de recherche principale */}
-        <div className="mb-4">
-          <input
-            type="text"
-            placeholder="Rechercher par titre, description, localisation..."
-            value={filters.query}
-            onChange={(e) => setFilters({ ...filters, query: e.target.value })}
-            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-          />
-        </div>
+  const hasActiveFilters =
+    filters.classification.length > 0 ||
+    filters.region !== '' ||
+    filters.departement !== '' ||
+    filters.forme !== '' ||
+    filters.couleur !== '' ||
+    filters.anneeDebut !== '' ||
+    filters.anneeFin !== '';
 
-        {/* Bouton pour afficher/masquer les filtres */}
-        <div className="flex gap-2 mb-4">
+  return (
+    <div className="control-panel bg-tech-dark border-tech mb-6">
+      <form onSubmit={handleSubmit}>
+        {/* Header with toggle */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="text-tech-grey text-xs font-bold uppercase tracking-wider">
+            // SEARCH & FILTERS
+          </div>
           <button
             type="button"
             onClick={() => setShowFilters(!showFilters)}
-            className="px-4 py-2 text-sm bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600"
+            className="terminal-button text-xs px-3 py-1"
           >
-            {showFilters ? 'Masquer les filtres' : 'Afficher les filtres'}
-          </button>
-          <button
-            type="submit"
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
-          >
-            Rechercher
-          </button>
-          <button
-            type="button"
-            onClick={resetFilters}
-            className="px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
-          >
-            Réinitialiser
+            {showFilters ? '[-]' : '[+]'}
           </button>
         </div>
 
-        {/* Filtres avancés */}
+        {/* Main search bar */}
+        <div className="mb-4">
+          <label className="text-tech-grey text-xs uppercase tracking-wider block mb-2">
+            SEARCH QUERY:
+          </label>
+          <input
+            type="text"
+            placeholder="SEARCH: TITLE, DESCRIPTION, LOCATION..."
+            value={filters.query}
+            onChange={(e) => setFilters({ ...filters, query: e.target.value })}
+            className="terminal-input w-full text-xs"
+          />
+        </div>
+
+        {/* Action buttons */}
+        <div className="flex gap-2 mb-4">
+          <button
+            type="submit"
+            className="terminal-button text-xs px-4 py-2 flex-1"
+          >
+            [SEARCH]
+          </button>
+          {hasActiveFilters && (
+            <button
+              type="button"
+              onClick={resetFilters}
+              className="terminal-button text-xs px-4 py-2"
+            >
+              [RESET]
+            </button>
+          )}
+        </div>
+
+        {/* Advanced filters */}
         {showFilters && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-4 border-t border-tech">
             {/* Classification */}
             <div>
-              <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
-                Classification
+              <label className="text-tech-grey text-xs font-bold uppercase tracking-wider block mb-3">
+                CLASSIFICATION:
               </label>
               <div className="space-y-2">
-                {['A', 'B', 'C', 'D'].map((classification) => (
-                  <label key={classification} className="flex items-center">
+                {['A', 'B', 'C', 'D', 'D1'].map((classification) => (
+                  <label
+                    key={classification}
+                    className="flex items-center gap-2 cursor-pointer hover:bg-white hover:bg-opacity-5 p-1 transition"
+                  >
                     <input
                       type="checkbox"
                       checked={filters.classification.includes(classification)}
                       onChange={() => handleClassificationToggle(classification)}
-                      className="mr-2"
+                      className="terminal-checkbox"
                     />
-                    <span className="text-sm text-gray-700 dark:text-gray-300">
-                      Classe {classification}
+                    <span
+                      className="classification-badge text-xs"
+                      style={{
+                        color: getClassificationColor(classification),
+                        borderColor: getClassificationColor(classification)
+                      }}
+                    >
+                      [{classification}]
+                    </span>
+                    <span className="text-tech-dim text-xs">
+                      {getClassificationLabel(classification)}
                     </span>
                   </label>
                 ))}
               </div>
             </div>
 
-            {/* Région */}
+            {/* Region */}
             <div>
-              <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
-                Région
+              <label className="text-tech-grey text-xs font-bold uppercase tracking-wider block mb-3">
+                RÉGION:
               </label>
               <select
                 value={filters.region}
                 onChange={(e) => setFilters({ ...filters, region: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                className="terminal-input w-full text-xs"
               >
-                <option value="">Toutes les régions</option>
+                <option value="">TOUTES LES RÉGIONS</option>
                 {regions.map((region) => (
                   <option key={region} value={region}>
                     {region}
@@ -160,17 +195,17 @@ export default function SearchInterface({
               </select>
             </div>
 
-            {/* Département */}
+            {/* Departement */}
             <div>
-              <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
-                Département
+              <label className="text-tech-grey text-xs font-bold uppercase tracking-wider block mb-3">
+                DÉPARTEMENT:
               </label>
               <select
                 value={filters.departement}
                 onChange={(e) => setFilters({ ...filters, departement: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                className="terminal-input w-full text-xs"
               >
-                <option value="">Tous les départements</option>
+                <option value="">TOUS LES DÉPARTEMENTS</option>
                 {departements.map((dept) => (
                   <option key={dept} value={dept}>
                     {dept}
@@ -181,15 +216,15 @@ export default function SearchInterface({
 
             {/* Forme */}
             <div>
-              <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
-                Forme du phénomène
+              <label className="text-tech-grey text-xs font-bold uppercase tracking-wider block mb-3">
+                FORME:
               </label>
               <select
                 value={filters.forme}
                 onChange={(e) => setFilters({ ...filters, forme: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                className="terminal-input w-full text-xs"
               >
-                <option value="">Toutes les formes</option>
+                <option value="">TOUTES LES FORMES</option>
                 {formes.map((forme) => (
                   <option key={forme} value={forme}>
                     {forme}
@@ -200,15 +235,15 @@ export default function SearchInterface({
 
             {/* Couleur */}
             <div>
-              <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
-                Couleur
+              <label className="text-tech-grey text-xs font-bold uppercase tracking-wider block mb-3">
+                COULEUR:
               </label>
               <select
                 value={filters.couleur}
                 onChange={(e) => setFilters({ ...filters, couleur: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                className="terminal-input w-full text-xs"
               >
-                <option value="">Toutes les couleurs</option>
+                <option value="">TOUTES LES COULEURS</option>
                 {couleurs.map((couleur) => (
                   <option key={couleur} value={couleur}>
                     {couleur}
@@ -217,32 +252,57 @@ export default function SearchInterface({
               </select>
             </div>
 
-            {/* Période */}
+            {/* Year range */}
             <div>
-              <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
-                Période
+              <label className="text-tech-grey text-xs font-bold uppercase tracking-wider block mb-3">
+                YEAR RANGE:
               </label>
-              <div className="flex gap-2">
-                <input
-                  type="number"
-                  placeholder="Année début"
-                  value={filters.anneeDebut}
-                  onChange={(e) => setFilters({ ...filters, anneeDebut: e.target.value })}
-                  className="w-1/2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-                  min="1900"
-                  max="2100"
-                />
-                <input
-                  type="number"
-                  placeholder="Année fin"
-                  value={filters.anneeFin}
-                  onChange={(e) => setFilters({ ...filters, anneeFin: e.target.value })}
-                  className="w-1/2 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-                  min="1900"
-                  max="2100"
-                />
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <div className="text-tech-dim text-xs mb-1">FROM:</div>
+                  <input
+                    type="number"
+                    placeholder="1937"
+                    value={filters.anneeDebut}
+                    onChange={(e) => setFilters({ ...filters, anneeDebut: e.target.value })}
+                    className="terminal-input w-full text-xs"
+                    min="1900"
+                    max="2100"
+                  />
+                </div>
+                <div>
+                  <div className="text-tech-dim text-xs mb-1">TO:</div>
+                  <input
+                    type="number"
+                    placeholder="2024"
+                    value={filters.anneeFin}
+                    onChange={(e) => setFilters({ ...filters, anneeFin: e.target.value })}
+                    className="terminal-input w-full text-xs"
+                    min="1900"
+                    max="2100"
+                  />
+                </div>
               </div>
             </div>
+          </div>
+        )}
+
+        {/* Filter summary when collapsed */}
+        {!showFilters && hasActiveFilters && (
+          <div className="text-tech-dim text-xs pt-2 border-t border-tech">
+            <div className="font-bold mb-1 text-tech-grey">ACTIVE FILTERS:</div>
+            {filters.classification.length > 0 && (
+              <div>Classification: {filters.classification.join(', ')}</div>
+            )}
+            {filters.region && <div>Région: {filters.region}</div>}
+            {filters.departement && <div>Département: {filters.departement}</div>}
+            {filters.forme && <div>Forme: {filters.forme}</div>}
+            {filters.couleur && <div>Couleur: {filters.couleur}</div>}
+            {(filters.anneeDebut || filters.anneeFin) && (
+              <div>
+                Years: {filters.anneeDebut || '...'} - {filters.anneeFin || '...'}
+              </div>
+            )}
           </div>
         )}
       </form>
