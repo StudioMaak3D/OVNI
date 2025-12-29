@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import type { CasAvecTemoignages } from '@/lib/dataParser';
 import { getClassificationColor } from '@/lib/mapUtils';
+import { BASE_PATH } from '@/lib/config';
 import AIInfoButton from '@/components/AIInfoButton';
 
 interface GeneratedSpaceshipProps {
@@ -19,7 +20,7 @@ export default function GeneratedSpaceship({ caseId, data }: GeneratedSpaceshipP
   // Find case details if data is provided
   const caseData = data?.find(c => c.id === caseId);
 
-  const imagePath = `/vaisseaux/${caseId}.png`;
+  const imagePath = `${BASE_PATH}/vaisseaux/${caseId}.png`;
 
   return (
     <div className="relative h-full">
