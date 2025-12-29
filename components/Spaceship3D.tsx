@@ -117,6 +117,7 @@ export default function Spaceship3D({ caseData }: Spaceship3DProps) {
   const [error, setError] = useState(false);
   const [showText, setShowText] = useState(false);
   const [language, setLanguage] = useState<'FR' | 'EN'>('FR');
+  const [showControls, setShowControls] = useState(false);
 
   useEffect(() => {
     // Start text animation after a short delay
@@ -162,10 +163,80 @@ export default function Spaceship3D({ caseData }: Spaceship3DProps) {
           className="relative w-full"
           style={{ height: '600px' }}
         >
+          {/* Controls Info Button - Top Left */}
+          <div className="absolute top-3 left-3 z-10">
+            <button
+              onClick={() => setShowControls(true)}
+              className="w-8 h-8 rounded-full bg-tech-dark border border-tech hover:border-tech-bright transition-colors flex items-center justify-center group"
+              title="Controls"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="text-tech-grey group-hover:text-tech-white transition-colors"
+              >
+                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+              </svg>
+            </button>
+          </div>
+
           {/* AI Info Button - Bottom Left */}
           <div className="absolute bottom-3 left-3 z-10">
             <AIInfoButton type="3d" />
           </div>
+
+          {/* Controls Modal */}
+          {showControls && (
+            <div
+              className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+              style={{ background: 'rgba(0, 0, 0, 0.8)' }}
+              onClick={() => setShowControls(false)}
+            >
+              <div
+                className="control-panel bg-tech-dark border-tech p-6 max-w-md"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <div className="text-tech-grey text-xs font-bold uppercase tracking-wider">
+                    {'//'} 3D CONTROLS
+                  </div>
+                  <button
+                    onClick={() => setShowControls(false)}
+                    className="text-tech-grey hover:text-tech-white text-xl leading-none"
+                  >
+                    ×
+                  </button>
+                </div>
+
+                <div className="space-y-3 text-xs">
+                  <div className="flex items-start gap-3">
+                    <div className="text-tech-dim min-w-[80px]">ROTATE:</div>
+                    <div className="text-tech-white">Click and drag to rotate the model</div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="text-tech-dim min-w-[80px]">ZOOM:</div>
+                    <div className="text-tech-white">Scroll or pinch to zoom in/out</div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="text-tech-dim min-w-[80px]">PAN:</div>
+                    <div className="text-tech-white">Right-click and drag to move</div>
+                  </div>
+                </div>
+
+                <div className="mt-4 pt-4 border-t border-tech">
+                  <p className="text-tech-dim text-xs">
+                    &gt; The model auto-rotates. Click to take control.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
         {error ? (
           <div className="h-full flex items-center justify-center">
             <div className="text-center">
