@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import type { CasAvecTemoignages } from '@/lib/dataParser';
 import { parseProductionCSV } from '@/lib/dataParser';
+import { BASE_PATH } from '@/lib/config';
 import DashboardStats, { useStats } from '@/components/DashboardStats';
 import MapPreview from '@/components/MapPreview';
 import GeneratedSpaceship from '@/components/GeneratedSpaceship';
@@ -33,7 +34,7 @@ export default function Dashboard() {
         setLoading(true);
         setError(null);
 
-        const response = await fetch('/data/geipan_case_ovni_production.csv');
+        const response = await fetch(`${BASE_PATH}/data/geipan_case_ovni_production.csv`);
         if (!response.ok) {
           throw new Error(`Failed to load data: ${response.statusText}`);
         }

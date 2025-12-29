@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { CasAvecTemoignages, parseProductionCSV } from '@/lib/dataParser';
+import { BASE_PATH } from '@/lib/config';
 import SearchInterface, { SearchFilters } from '@/components/SearchInterface';
 import ResultsList from '@/components/ResultsList';
 import CasDetailModal from '@/components/CasDetailModal';
@@ -34,7 +35,7 @@ export default function ListView() {
     async function loadData() {
       try {
         setLoading(true);
-        const response = await fetch('/data/geipan_case_ovni_production.csv');
+        const response = await fetch(`${BASE_PATH}/data/geipan_case_ovni_production.csv`);
         if (!response.ok) throw new Error('Erreur lors du chargement des données');
         const csvContent = await response.text();
         const parsedData = parseProductionCSV(csvContent);
