@@ -203,7 +203,10 @@ function MapPageContent() {
           <DepartmentDetailPanel
             departmentCode={selectedDepartment}
             departmentData={departmentData}
-            onClose={() => setSelectedDepartment(null)}
+            onClose={() => {
+              setSelectedDepartment(null);
+              setLeftPanelVisible(true); // Restore left panel when closing details
+            }}
           />
         )}
       </div>
