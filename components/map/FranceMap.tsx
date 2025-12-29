@@ -14,6 +14,8 @@ interface FranceMapProps {
   onDepartmentHover?: (code: string | null) => void;
   hoveredDepartment?: string | null;
   selectedDepartment?: string | null;
+  leftPanelVisible?: boolean;
+  isLargeScreen?: boolean;
 }
 
 export default function FranceMap({
@@ -22,6 +24,8 @@ export default function FranceMap({
   onDepartmentHover,
   hoveredDepartment,
   selectedDepartment,
+  leftPanelVisible = true,
+  isLargeScreen = false,
 }: FranceMapProps) {
   // Calculate color scale based on max cases
   const colorScale = useMemo(() => {
@@ -32,11 +36,27 @@ export default function FranceMap({
     return createChoroplethColorScale(maxCases);
   }, [departmentData]);
 
+  // Calculate map center based on screen size and panel visibility
+  const mapCenter: [number, number] = useMemo(() => {
+    // On large screens (iMac), always use default center
+    if (isLargeScreen) {
+      return [2.5, 46.2];
+    }
+
+    // On smaller screens (laptop), shift left when left panel is hidden
+    if (!leftPanelVisible) {
+      return [5.0, 46.2]; // Shift map to appear more on the left
+    }
+
+    // Default center
+    return [2.5, 46.2];
+  }, [leftPanelVisible, isLargeScreen]);
+
   return (
     <ComposableMap
       projection="geoMercator"
       projectionConfig={{
-        center: [2.5, 46.2], // Center on France (raised up)
+        center: mapCenter,
         scale: 1900,
       }}
       className="w-full h-full"

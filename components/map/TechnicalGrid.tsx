@@ -33,12 +33,6 @@ export default function TechnicalGrid() {
         />
       ))}
 
-      {/* Corner brackets - Top Left */}
-      <g className="corner-bracket">
-        <path d="M 30,30 L 30,80" />
-        <path d="M 30,30 L 80,30" />
-      </g>
-
       {/* Technical annotations */}
       <text
         x="20"

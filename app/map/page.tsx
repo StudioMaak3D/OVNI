@@ -35,6 +35,8 @@ function MapPageContent() {
     classifications: [],
     yearRange: [1937, 2024],
   });
+  const [leftPanelVisible, setLeftPanelVisible] = useState(true);
+  const [isLargeScreen, setIsLargeScreen] = useState(false);
 
   // Load data from CSV file
   useEffect(() => {
@@ -73,6 +75,18 @@ function MapPageContent() {
     }
   }, [searchParams, data]);
 
+  // Detect screen size (large screens like iMac vs laptops)
+  useEffect(() => {
+    const checkScreenSize = () => {
+      // Consider screens wider than 1680px as "large" (iMac, external monitors)
+      setIsLargeScreen(window.innerWidth > 1680);
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
   // Track mouse position for tooltip
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -96,6 +110,10 @@ function MapPageContent() {
   const handleDepartmentClick = (code: string) => {
     setSelectedDepartment(code);
     setHoveredDepartment(null); // Clear hover when selecting
+    // Only hide left panel on smaller screens (laptops), not on large screens (iMac)
+    if (!isLargeScreen) {
+      setLeftPanelVisible(false);
+    }
   };
 
   const handleDepartmentHover = (code: string | null) => {
@@ -113,28 +131,41 @@ function MapPageContent() {
       {/* Main content with top padding for fixed nav */}
       <div className="pt-16 h-screen flex">
         {/* Left sidebar - Controls */}
-        <aside className="w-80 border-r border-tech overflow-y-auto bg-tech-dark">
-          <MapControls filters={filters} onFiltersChange={setFilters} />
-          <div className="border-t border-tech mt-6">
-            <MapLegend departmentData={departmentData} maxCases={maxCases} />
-          </div>
-
-          {/* About section */}
-          <div className="border-t border-tech mt-6 p-6">
-            <div className="text-tech-grey text-xs font-bold mb-3 uppercase tracking-wider">
-              About this visualization
+        {leftPanelVisible && (
+          <aside className="w-80 border-r border-tech overflow-y-auto bg-tech-dark">
+            <MapControls filters={filters} onFiltersChange={setFilters} />
+            <div className="border-t border-tech mt-6">
+              <MapLegend departmentData={departmentData} maxCases={maxCases} />
             </div>
-            <p className="text-tech-dim text-xs leading-relaxed mb-3">
-              This map displays {Array.from(departmentData.values()).reduce((sum, dept) => sum + dept.totalCases, 0).toLocaleString()} OVNI observations reported in France and collected by GEIPAN (Groupe d&apos;Études et d&apos;Informations sur les Phénomènes Aérospatiaux Non-identifiés).
-            </p>
-            <p className="text-tech-dim text-xs leading-relaxed">
-              Each department is shaded according to the number of reported cases. Hover over a department to see details, or click to explore individual observations.
-            </p>
-          </div>
-        </aside>
+
+            {/* About section */}
+            <div className="border-t border-tech mt-6 p-6">
+              <div className="text-tech-grey text-xs font-bold mb-3 uppercase tracking-wider">
+                About this visualization
+              </div>
+              <p className="text-tech-dim text-xs leading-relaxed mb-3">
+                This map displays {Array.from(departmentData.values()).reduce((sum, dept) => sum + dept.totalCases, 0).toLocaleString()} OVNI observations reported in France and collected by GEIPAN (Groupe d&apos;Études et d&apos;Informations sur les Phénomènes Aérospatiaux Non-identifiés).
+              </p>
+              <p className="text-tech-dim text-xs leading-relaxed">
+                Each department is shaded according to the number of reported cases. Hover over a department to see details, or click to explore individual observations.
+              </p>
+            </div>
+          </aside>
+        )}
 
         {/* Main map area */}
         <div className="flex-1 relative">
+          {/* Show filters button - only visible when left panel is hidden */}
+          {!leftPanelVisible && (
+            <button
+              onClick={() => setLeftPanelVisible(true)}
+              className="terminal-button absolute top-4 left-4 z-50 text-xs px-3 py-2"
+              aria-label="Show filters panel"
+            >
+              [SHOW FILTERS]
+            </button>
+          )}
+
           <MapContainer loading={loading} error={error}>
             {!loading && !error && (
               <>
@@ -151,6 +182,8 @@ function MapPageContent() {
                     onDepartmentHover={handleDepartmentHover}
                     hoveredDepartment={hoveredDepartment}
                     selectedDepartment={selectedDepartment}
+                    leftPanelVisible={leftPanelVisible}
+                    isLargeScreen={isLargeScreen}
                   />
                 </div>
 
