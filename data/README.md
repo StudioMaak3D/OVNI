@@ -224,6 +224,26 @@ This dataset can be used for:
 - 🌍 **Cross-country comparison** with other UFO databases
 - 📚 **Natural Language Processing** on French text data
 
+## Featured Project
+
+### 🚀 OVNI Explorer - Interactive Visualization Platform
+
+A comprehensive web application showcasing the full potential of this dataset through advanced data visualization and AI-powered features.
+
+**Live Demo**: [https://studiomaak3d.github.io/OVNI/](https://studiomaak3d.github.io/OVNI/)
+
+**Key Features**:
+- **Interactive France Map**: Choropleth visualization of 5,954 UFO cases across French departments with real-time filtering by classification, time period, and region
+- **AI-Generated 3D Reconstructions**: Witness testimonies transformed into photorealistic 3D spacecraft models using AI image generation
+- **Advanced Search Interface**: Full-text search with multi-criteria filtering (shape, color, date, location, classification)
+- **Visual Description Extraction**: Automated extraction and formatting of visual characteristics from testimonies, optimized for AI prompt generation
+- **Statistical Dashboard**: Real-time analytics with classification distribution, temporal trends, and geographic insights
+- **Case Detail Viewer**: Complete case files with structured testimony data, investigation reports, and cross-referenced observations
+
+**Technologies**: Next.js, React, Three.js, D3.js, TypeScript, Tailwind CSS
+
+**Perfect for**: Demonstrating practical applications of the dataset in data visualization, AI integration, and interactive web experiences.
+
 ## Data Source
 
 Official data from **GEIPAN** (CNES):
