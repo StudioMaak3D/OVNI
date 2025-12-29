@@ -19,7 +19,7 @@ import MapControls, { type MapFilters } from '@/components/map/MapControls';
 import MapTooltip from '@/components/map/MapTooltip';
 import DepartmentDetailPanel from '@/components/map/DepartmentDetailPanel';
 import CasDetailModal from '@/components/CasDetailModal';
-import Link from 'next/link';
+import Navbar from '@/components/Navbar';
 import '@/styles/technical-map.css';
 
 function MapPageContent() {
@@ -108,22 +108,7 @@ function MapPageContent() {
   return (
     <main className="technical-map min-h-screen">
       {/* Navigation Header */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-tech-dark border-b border-tech flex items-center justify-between px-6 py-3">
-        <div className="text-tech-white font-bold text-lg terminal-text">
-          OVNI EXPLORER // MAP
-        </div>
-        <div className="flex gap-4">
-          <Link href="/" className="nav-link">
-            [DASHBOARD]
-          </Link>
-          <Link href="/map/list" className="nav-link">
-            [LIST VIEW]
-          </Link>
-          <Link href="/map" className="nav-link nav-link-active">
-            [MAP VIEW]
-          </Link>
-        </div>
-      </nav>
+      <Navbar title="OVNI EXPLORER // MAP" />
 
       {/* Main content with top padding for fixed nav */}
       <div className="pt-16 h-screen flex">

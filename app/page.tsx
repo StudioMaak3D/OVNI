@@ -8,10 +8,8 @@ import DashboardStats, { useStats } from '@/components/DashboardStats';
 import MapPreview from '@/components/MapPreview';
 import GeneratedSpaceship from '@/components/GeneratedSpaceship';
 import Spaceship3D from '@/components/Spaceship3D';
-import AboutModal from '@/components/AboutModal';
+import Navbar from '@/components/Navbar';
 import AIInfoButton from '@/components/AIInfoButton';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { getDepartmentName } from '@/lib/mapUtils';
 import '@/styles/technical-map.css';
 
@@ -20,8 +18,6 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [videoSectionLang, setVideoSectionLang] = useState<'FR' | 'EN'>('FR');
-  const [isAboutOpen, setIsAboutOpen] = useState(false);
-  const pathname = usePathname();
   const stats = useStats(data);
 
   // Translation helper for video section
@@ -56,40 +52,7 @@ export default function Dashboard() {
   return (
     <main className="technical-map min-h-screen">
       {/* Navigation Header */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-tech-dark border-b border-tech flex items-center justify-between px-6 py-3">
-        <div className="text-tech-white font-bold text-lg terminal-text">
-          OVNI EXPLORER
-        </div>
-        <div className="flex gap-4">
-          <Link
-            href="/"
-            className={`nav-link ${pathname === '/' ? 'nav-link-active' : ''}`}
-          >
-            [DASHBOARD]
-          </Link>
-          <Link
-            href="/map/list"
-            className={`nav-link ${pathname === '/map/list' ? 'nav-link-active' : ''}`}
-          >
-            [LIST VIEW]
-          </Link>
-          <Link
-            href="/map"
-            className={`nav-link ${pathname === '/map' ? 'nav-link-active' : ''}`}
-          >
-            [MAP VIEW]
-          </Link>
-          <button
-            onClick={() => setIsAboutOpen(true)}
-            className="nav-link"
-          >
-            [ABOUT]
-          </button>
-        </div>
-      </nav>
-
-      {/* About Modal */}
-      <AboutModal isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
+      <Navbar />
 
       {/* Main content with top padding for fixed nav */}
       <div className="pt-16 min-h-screen">

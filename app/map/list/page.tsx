@@ -6,9 +6,7 @@ import { BASE_PATH } from '@/lib/config';
 import SearchInterface, { SearchFilters } from '@/components/SearchInterface';
 import ResultsList from '@/components/ResultsList';
 import CasDetailModal from '@/components/CasDetailModal';
-import AboutModal from '@/components/AboutModal';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import Navbar from '@/components/Navbar';
 import '@/styles/technical-map.css';
 
 export default function ListView() {
@@ -27,8 +25,6 @@ export default function ListView() {
   });
   const [sortBy, setSortBy] = useState('date-desc');
   const [selectedCas, setSelectedCas] = useState<CasAvecTemoignages | null>(null);
-  const [isAboutOpen, setIsAboutOpen] = useState(false);
-  const pathname = usePathname();
 
   // Charger les données au montage
   useEffect(() => {
@@ -168,18 +164,7 @@ export default function ListView() {
   if (loading) {
     return (
       <main className="technical-map min-h-screen" style={{ background: '#0d0d0d' }}>
-        <nav className="fixed top-0 left-0 right-0 z-50 border-b flex items-center justify-between px-6 py-3" style={{ background: '#0d0d0d', borderColor: '#2a2a2a' }}>
-          <div className="font-bold text-lg terminal-text" style={{ color: '#e5e5e5' }}>
-            OVNI EXPLORER // LIST
-          </div>
-          <div className="flex gap-4">
-            <Link href="/" className="nav-link">[DASHBOARD]</Link>
-            <Link href="/map/list" className="nav-link nav-link-active">[LIST VIEW]</Link>
-            <Link href="/map" className="nav-link">[MAP VIEW]</Link>
-            <button onClick={() => setIsAboutOpen(true)} className="nav-link">[ABOUT]</button>
-          </div>
-        </nav>
-        <AboutModal isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
+        <Navbar title="OVNI EXPLORER // LIST" />
         <div className="pt-16 flex items-center justify-center py-20">
           <div className="text-center">
             <div className="terminal-spinner mx-auto mb-4"></div>
@@ -195,18 +180,7 @@ export default function ListView() {
   if (error) {
     return (
       <main className="technical-map min-h-screen" style={{ background: '#0d0d0d' }}>
-        <nav className="fixed top-0 left-0 right-0 z-50 border-b flex items-center justify-between px-6 py-3" style={{ background: '#0d0d0d', borderColor: '#2a2a2a' }}>
-          <div className="font-bold text-lg terminal-text" style={{ color: '#e5e5e5' }}>
-            OVNI EXPLORER // LIST
-          </div>
-          <div className="flex gap-4">
-            <Link href="/" className="nav-link">[DASHBOARD]</Link>
-            <Link href="/map/list" className="nav-link nav-link-active">[LIST VIEW]</Link>
-            <Link href="/map" className="nav-link">[MAP VIEW]</Link>
-            <button onClick={() => setIsAboutOpen(true)} className="nav-link">[ABOUT]</button>
-          </div>
-        </nav>
-        <AboutModal isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
+        <Navbar title="OVNI EXPLORER // LIST" />
         <div className="pt-16 max-w-4xl mx-auto p-8">
           <div className="border-2 border-red-500 p-6" style={{ background: '#1a1a1a' }}>
             <div className="text-red-500 text-xs font-bold mb-2 uppercase tracking-wider">
@@ -321,34 +295,7 @@ export default function ListView() {
         background: '#0d0d0d',
       }}>
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 border-b flex items-center justify-between px-6 py-3" style={{
-        background: '#0d0d0d',
-        borderColor: '#2a2a2a'
-      }}>
-        <div className="font-bold text-lg terminal-text" style={{ color: '#e5e5e5' }}>
-          OVNI EXPLORER // LIST
-        </div>
-        <div className="flex gap-4">
-          <Link href="/" className="nav-link">
-            [DASHBOARD]
-          </Link>
-          <Link href="/map/list" className="nav-link nav-link-active">
-            [LIST VIEW]
-          </Link>
-          <Link href="/map" className="nav-link">
-            [MAP VIEW]
-          </Link>
-          <button
-            onClick={() => setIsAboutOpen(true)}
-            className="nav-link"
-          >
-            [ABOUT]
-          </button>
-        </div>
-      </nav>
-
-      {/* About Modal */}
-      <AboutModal isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
+      <Navbar title="OVNI EXPLORER // LIST" />
 
       <div className="pt-32">
         <div className="max-w-7xl mx-auto px-8 mb-12 text-center">
