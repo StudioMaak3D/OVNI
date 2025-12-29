@@ -55,7 +55,7 @@ export default function CasDetailModal({ cas, onClose }: CasDetailModalProps) {
           {/* Informations générales */}
           <div>
             <h3 className="text-xs font-bold text-tech-grey mb-3 uppercase tracking-wider">
-              // INFORMATIONS GÉNÉRALES
+              {'//'} INFORMATIONS GÉNÉRALES
             </h3>
             <div className="grid grid-cols-2 gap-4 text-xs">
               <div>
@@ -89,7 +89,7 @@ export default function CasDetailModal({ cas, onClose }: CasDetailModalProps) {
           {cas.resumeCourt && (
             <div>
               <h3 className="text-xs font-bold text-tech-grey mb-3 uppercase tracking-wider border-t border-tech pt-4">
-                // RÉSUMÉ
+                {'//'} RÉSUMÉ
               </h3>
               <p className="text-sm text-tech-white leading-relaxed text-body">{cas.resumeCourt}</p>
             </div>
@@ -100,7 +100,7 @@ export default function CasDetailModal({ cas, onClose }: CasDetailModalProps) {
             <div>
               <div className="flex justify-between items-center mb-3 border-t border-tech pt-4">
                 <h3 className="text-xs font-bold text-tech-grey uppercase tracking-wider">
-                  // DESCRIPTIONS VISUELLES ({cas.temoignages.length} TÉMOIGNAGE
+                  {'//'} DESCRIPTIONS VISUELLES ({cas.temoignages.length} TÉMOIGNAGE
                   {cas.temoignages.length > 1 ? 'S' : ''})
                 </h3>
                 <button
@@ -196,7 +196,7 @@ export default function CasDetailModal({ cas, onClose }: CasDetailModalProps) {
           {cas.descriptionDetaillee && (
             <div>
               <h3 className="text-xs font-bold text-tech-grey mb-3 uppercase tracking-wider border-t border-tech pt-4">
-                // DESCRIPTION DÉTAILLÉE
+                {'//'} DESCRIPTION DÉTAILLÉE
               </h3>
               <div
                 className="text-sm text-tech-white leading-relaxed prose-sm max-w-none text-body"

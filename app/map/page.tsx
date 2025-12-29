@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useState, useMemo } from 'react';
+import { Suspense, useEffect, useState, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
 import type { CasAvecTemoignages } from '@/lib/dataParser';
+import { parseProductionCSV } from '@/lib/dataParser';
 import {
   aggregateCasesByDepartment,
   filterCases,
@@ -20,7 +21,7 @@ import CasDetailModal from '@/components/CasDetailModal';
 import Link from 'next/link';
 import '@/styles/technical-map.css';
 
-export default function MapPage() {
+function MapPageContent() {
   const searchParams = useSearchParams();
   const [data, setData] = useState<CasAvecTemoignages[]>([]);
   const [loading, setLoading] = useState(true);
@@ -34,20 +35,21 @@ export default function MapPage() {
     yearRange: [1937, 2024],
   });
 
-  // Load data from API
+  // Load data from CSV file
   useEffect(() => {
     const loadData = async () => {
       try {
         setLoading(true);
         setError(null);
 
-        const response = await fetch('/api/data');
+        const response = await fetch('/data/geipan_case_ovni_production.csv');
         if (!response.ok) {
           throw new Error(`Failed to load data: ${response.statusText}`);
         }
 
-        const result = await response.json();
-        setData(result.data);
+        const csvContent = await response.text();
+        const parsedData = parseProductionCSV(csvContent);
+        setData(parsedData);
       } catch (err) {
         console.error('Error loading data:', err);
         setError(err instanceof Error ? err.message : 'Failed to load data');
@@ -137,7 +139,7 @@ export default function MapPage() {
               About this visualization
             </div>
             <p className="text-tech-dim text-xs leading-relaxed mb-3">
-              This map displays {Array.from(departmentData.values()).reduce((sum, dept) => sum + dept.totalCases, 0).toLocaleString()} OVNI observations reported in France and collected by GEIPAN (Groupe d'Études et d'Informations sur les Phénomènes Aérospatiaux Non-identifiés).
+              This map displays {Array.from(departmentData.values()).reduce((sum, dept) => sum + dept.totalCases, 0).toLocaleString()} OVNI observations reported in France and collected by GEIPAN (Groupe d&apos;Études et d&apos;Informations sur les Phénomènes Aérospatiaux Non-identifiés).
             </p>
             <p className="text-tech-dim text-xs leading-relaxed">
               Each department is shaded according to the number of reported cases. Hover over a department to see details, or click to explore individual observations.
@@ -195,5 +197,13 @@ export default function MapPage() {
         />
       )}
     </main>
+  );
+}
+
+export default function MapPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-tech-dark flex items-center justify-center text-tech-white">Loading...</div>}>
+      <MapPageContent />
+    </Suspense>
   );
 }

@@ -95,7 +95,7 @@ export default function SearchInterface({
         {/* Header */}
         <div className="mb-6 text-center">
           <div className="text-tech-white text-lg font-bold uppercase tracking-wider">
-            // SEARCH
+            {'//'} SEARCH
           </div>
         </div>
 

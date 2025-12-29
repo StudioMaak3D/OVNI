@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import { CasAvecTemoignages } from '@/lib/dataParser';
+import { CasAvecTemoignages, parseProductionCSV } from '@/lib/dataParser';
 import SearchInterface, { SearchFilters } from '@/components/SearchInterface';
 import ResultsList from '@/components/ResultsList';
 import CasDetailModal from '@/components/CasDetailModal';
@@ -34,10 +34,11 @@ export default function ListView() {
     async function loadData() {
       try {
         setLoading(true);
-        const response = await fetch('/api/data');
+        const response = await fetch('/data/geipan_case_ovni_production.csv');
         if (!response.ok) throw new Error('Erreur lors du chargement des données');
-        const result = await response.json();
-        setData(result.data);
+        const csvContent = await response.text();
+        const parsedData = parseProductionCSV(csvContent);
+        setData(parsedData);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Erreur inconnue');
       } finally {
@@ -208,7 +209,7 @@ export default function ListView() {
         <div className="pt-16 max-w-4xl mx-auto p-8">
           <div className="border-2 border-red-500 p-6" style={{ background: '#1a1a1a' }}>
             <div className="text-red-500 text-xs font-bold mb-2 uppercase tracking-wider">
-              // ERROR
+              {'//'} ERROR
             </div>
             <p className="text-sm mb-4" style={{ color: '#e5e5e5' }}>{error}</p>
             <button

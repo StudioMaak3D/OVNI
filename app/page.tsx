@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import type { CasAvecTemoignages } from '@/lib/dataParser';
+import { parseProductionCSV } from '@/lib/dataParser';
 import DashboardStats, { useStats } from '@/components/DashboardStats';
 import MapPreview from '@/components/MapPreview';
 import GeneratedSpaceship from '@/components/GeneratedSpaceship';
@@ -25,20 +26,21 @@ export default function Dashboard() {
   // Translation helper for video section
   const tv = (fr: string, en: string) => videoSectionLang === 'EN' ? en : fr;
 
-  // Load data from API
+  // Load data from CSV file
   useEffect(() => {
     const loadData = async () => {
       try {
         setLoading(true);
         setError(null);
 
-        const response = await fetch('/api/data');
+        const response = await fetch('/data/geipan_case_ovni_production.csv');
         if (!response.ok) {
           throw new Error(`Failed to load data: ${response.statusText}`);
         }
 
-        const result = await response.json();
-        setData(result.data);
+        const csvContent = await response.text();
+        const parsedData = parseProductionCSV(csvContent);
+        setData(parsedData);
       } catch (err) {
         console.error('Error loading data:', err);
         setError(err instanceof Error ? err.message : 'Failed to load data');
@@ -103,7 +105,7 @@ export default function Dashboard() {
           <div className="max-w-4xl mx-auto p-8">
             <div className="bg-tech-dark border-2 border-red-500 p-6">
               <div className="text-red-500 text-xs font-bold mb-2 uppercase tracking-wider">
-                // ERROR
+                {'//'} ERROR
               </div>
               <p className="text-tech-white text-sm mb-4">{error}</p>
               <button

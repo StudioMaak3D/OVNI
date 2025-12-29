@@ -21,7 +21,7 @@ export default function ResultsList({
     return (
       <div className="bg-tech-dark border-tech p-8 text-center">
         <div className="text-tech-grey text-xs font-bold mb-2 uppercase tracking-wider">
-          // NO RESULTS FOUND
+          {'//'} NO RESULTS FOUND
         </div>
         <p className="text-tech-dim text-xs">
           &gt; MODIFY SEARCH PARAMETERS
