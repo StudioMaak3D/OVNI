@@ -322,7 +322,7 @@ export default function Dashboard() {
                     playsInline
                     controls
                   >
-                    <source src="/recreate_a_scene_set_on_june_15th_1951_at_11-30_am_two_military_pilots_take_off_from_the_orange-car_0vnf8rdi0ejvi6ip8edd_1.MP4" type="video/mp4" />
+                    <source src="/demo-1951-case.mp4" type="video/mp4" />
                     Your browser does not support the video tag.
                   </video>
                   {/* AI Info Button - Below Video, Bottom Left */}

@@ -140,6 +140,21 @@ export default function AboutModal({ isOpen, onClose }: AboutModalProps) {
             </p>
           </div>
 
+          {/* Contact Section */}
+          <div>
+            <h2 className="text-tech-dim text-sm mb-3 uppercase tracking-wider font-mono">
+              {t('// CONTACT', '// CONTACT')}
+            </h2>
+            <p className="text-tech-grey text-base leading-relaxed">
+              <a
+                href="mailto:contact@studiomaak.fr"
+                className="text-tech-white hover:text-tech-bright underline transition-colors"
+              >
+                contact@studiomaak.fr
+              </a>
+            </p>
+          </div>
+
           {/* Footer */}
           <div className="text-center text-tech-dim text-xs pt-4 font-mono">
             {t(

@@ -18,7 +18,7 @@ export async function GET() {
     }
 
     // Charger le fichier CSV de production consolidé
-    const productionFilePath = join(process.cwd(), 'data', 'geipan_case_ovni_production.csv');
+    const productionFilePath = join(process.cwd(), 'public', 'data', 'geipan_case_ovni_production.csv');
     const csvContent = await readFile(productionFilePath, 'utf-8');
 
     // Parser les données
