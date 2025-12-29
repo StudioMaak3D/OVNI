@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useMemo } from 'react';
+import { useSearchParams } from 'next/navigation';
 import type { CasAvecTemoignages } from '@/lib/dataParser';
 import {
   aggregateCasesByDepartment,
@@ -15,15 +16,18 @@ import MapLegend from '@/components/map/MapLegend';
 import MapControls, { type MapFilters } from '@/components/map/MapControls';
 import MapTooltip from '@/components/map/MapTooltip';
 import DepartmentDetailPanel from '@/components/map/DepartmentDetailPanel';
+import CasDetailModal from '@/components/CasDetailModal';
 import Link from 'next/link';
 import '@/styles/technical-map.css';
 
 export default function MapPage() {
+  const searchParams = useSearchParams();
   const [data, setData] = useState<CasAvecTemoignages[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [hoveredDepartment, setHoveredDepartment] = useState<string | null>(null);
   const [selectedDepartment, setSelectedDepartment] = useState<string | null>(null);
+  const [selectedCas, setSelectedCas] = useState<CasAvecTemoignages | null>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [filters, setFilters] = useState<MapFilters>({
     classifications: [],
@@ -54,6 +58,17 @@ export default function MapPage() {
 
     loadData();
   }, []);
+
+  // Handle case parameter from URL
+  useEffect(() => {
+    const caseId = searchParams.get('case');
+    if (caseId && data.length > 0) {
+      const cas = data.find(c => c.id === caseId);
+      if (cas) {
+        setSelectedCas(cas);
+      }
+    }
+  }, [searchParams, data]);
 
   // Track mouse position for tooltip
   useEffect(() => {
@@ -92,7 +107,7 @@ export default function MapPage() {
       {/* Navigation Header */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-tech-dark border-b border-tech flex items-center justify-between px-6 py-3">
         <div className="text-tech-white font-bold text-lg terminal-text">
-          GEIPAN // MAP VISUALIZATION
+          OVNI EXPLORER // MAP
         </div>
         <div className="flex gap-4">
           <Link href="/" className="nav-link">
@@ -122,7 +137,7 @@ export default function MapPage() {
               About this visualization
             </div>
             <p className="text-tech-dim text-xs leading-relaxed mb-3">
-              This map displays {Array.from(departmentData.values()).reduce((sum, dept) => sum + dept.totalCases, 0).toLocaleString()} UFO observations reported in France and collected by GEIPAN (Groupe d'Études et d'Informations sur les Phénomènes Aérospatiaux Non-identifiés).
+              This map displays {Array.from(departmentData.values()).reduce((sum, dept) => sum + dept.totalCases, 0).toLocaleString()} OVNI observations reported in France and collected by GEIPAN (Groupe d'Études et d'Informations sur les Phénomènes Aérospatiaux Non-identifiés).
             </p>
             <p className="text-tech-dim text-xs leading-relaxed">
               Each department is shaded according to the number of reported cases. Hover over a department to see details, or click to explore individual observations.
@@ -171,6 +186,14 @@ export default function MapPage() {
           />
         )}
       </div>
+
+      {/* Case Detail Modal */}
+      {selectedCas && (
+        <CasDetailModal
+          cas={selectedCas}
+          onClose={() => setSelectedCas(null)}
+        />
+      )}
     </main>
   );
 }

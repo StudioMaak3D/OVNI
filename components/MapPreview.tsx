@@ -30,17 +30,29 @@ export default function MapPreview({ data }: MapPreviewProps) {
   }, [maxCases]);
 
   return (
-    <div className="control-panel bg-tech-dark border-tech-bright h-full flex flex-col">
-      <Link href="/map" className="block flex-1 flex flex-col">
-        <div className="relative bg-tech-darker border border-tech rounded-sm overflow-hidden hover:border-tech-bright transition-colors cursor-pointer flex-1 flex items-center justify-center">
+    <div className="h-full flex flex-col">
+      {/* Title and Button */}
+      <div className="mb-8 flex items-center justify-between">
+        <h2 className="text-3xl font-bold text-tech-white uppercase tracking-wider terminal-text">
+          CASE REPARTITION
+        </h2>
+        <Link href="/map">
+          <span className="terminal-button inline-block px-6 py-2 text-xs">
+            [VIEW FULL MAP →]
+          </span>
+        </Link>
+      </div>
+
+      <Link href="/map" className="block">
+        <div className="relative bg-tech-darker overflow-hidden hover:opacity-90 transition-opacity cursor-pointer flex items-center justify-center">
           <ComposableMap
             projection="geoMercator"
             projectionConfig={{
               center: [2.5, 46.2],
-              scale: 1800,
+              scale: 2200,
             }}
             width={800}
-            height={700}
+            height={600}
             className="w-full h-auto"
           >
             <Geographies geography={geoUrl}>
@@ -70,12 +82,6 @@ export default function MapPreview({ data }: MapPreviewProps) {
               }
             </Geographies>
           </ComposableMap>
-        </div>
-
-        <div className="mt-3 text-center">
-          <span className="terminal-button inline-block px-6 py-2 text-xs">
-            [VIEW FULL MAP →]
-          </span>
         </div>
       </Link>
     </div>

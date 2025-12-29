@@ -113,7 +113,7 @@ export default function ResultsList({
 
             {/* Summary */}
             {cas.resumeCourt && (
-              <p className="text-tech-white text-xs leading-relaxed mb-3 font-mono line-clamp-2">
+              <p className="text-tech-white text-sm leading-relaxed mb-3 text-body line-clamp-2">
                 {cas.resumeCourt}
               </p>
             )}

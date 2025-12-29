@@ -6,6 +6,8 @@ import DashboardStats, { useStats } from '@/components/DashboardStats';
 import MapPreview from '@/components/MapPreview';
 import GeneratedSpaceship from '@/components/GeneratedSpaceship';
 import Spaceship3D from '@/components/Spaceship3D';
+import AboutModal from '@/components/AboutModal';
+import AIInfoButton from '@/components/AIInfoButton';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { getDepartmentName } from '@/lib/mapUtils';
@@ -15,8 +17,13 @@ export default function Dashboard() {
   const [data, setData] = useState<CasAvecTemoignages[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [videoSectionLang, setVideoSectionLang] = useState<'FR' | 'EN'>('FR');
+  const [isAboutOpen, setIsAboutOpen] = useState(false);
   const pathname = usePathname();
   const stats = useStats(data);
+
+  // Translation helper for video section
+  const tv = (fr: string, en: string) => videoSectionLang === 'EN' ? en : fr;
 
   // Load data from API
   useEffect(() => {
@@ -48,7 +55,7 @@ export default function Dashboard() {
       {/* Navigation Header */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-tech-dark border-b border-tech flex items-center justify-between px-6 py-3">
         <div className="text-tech-white font-bold text-lg terminal-text">
-          GEIPAN // DATA OVERVIEW
+          OVNI EXPLORER
         </div>
         <div className="flex gap-4">
           <Link
@@ -69,8 +76,17 @@ export default function Dashboard() {
           >
             [MAP VIEW]
           </Link>
+          <button
+            onClick={() => setIsAboutOpen(true)}
+            className="nav-link"
+          >
+            [ABOUT]
+          </button>
         </div>
       </nav>
+
+      {/* About Modal */}
+      <AboutModal isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
 
       {/* Main content with top padding for fixed nav */}
       <div className="pt-16 min-h-screen">
@@ -101,17 +117,18 @@ export default function Dashboard() {
         ) : (
           <div className="max-w-7xl mx-auto p-8">
             {/* Header */}
-            <div className="mb-12 text-center">
-              <h1 className="text-4xl font-bold text-tech-white mb-3 uppercase tracking-wider terminal-text">
-                GEIPAN DATABASE OVERVIEW
+            <div className="pt-16 mb-32 text-center max-w-4xl mx-auto">
+              <h1 className="text-5xl md:text-6xl font-bold text-tech-white mb-10 uppercase tracking-wider terminal-text">
+                OVNI EXPLORER
               </h1>
-              <p className="text-tech-grey text-sm mb-8">
-                French UFO observation data collected by Groupe d&apos;Études et d&apos;Informations sur les Phénomènes Aérospatiaux Non-identifiés
+              <p className="text-tech-grey text-xl leading-relaxed">
+                Explore and visualize French OVNI (UFO) observations from GEIPAN (Groupe d&apos;Études et d&apos;Informations sur les Phénomènes Aérospatiaux Non-identifiés).
+                Navigate through decades of witness testimonies, analyze sighting patterns, and generate AI reconstructions from detailed descriptions.
               </p>
             </div>
 
             {/* Hero Stats - Large Numbers */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-40">
               {/* Total Cases */}
               <div className="control-panel bg-tech-dark border-tech text-center">
                 <div className="text-tech-dim text-xs mb-2 uppercase tracking-wider">CASES</div>
@@ -150,13 +167,20 @@ export default function Dashboard() {
               </div>
             </div>
 
-            {/* Three columns: Map + Classifications + Generated Spaceship */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6 items-stretch">
-              {/* Map Preview */}
-              <div className="h-full">
-                <MapPreview data={data} />
-              </div>
+            {/* Map Preview - Full Width */}
+            <div className="mb-32">
+              <MapPreview data={data} />
+            </div>
 
+            {/* Explore Cases Title */}
+            <div className="mb-16 text-center">
+              <h2 className="text-3xl font-bold text-tech-white uppercase tracking-wider terminal-text">
+                EXPLORE CASES
+              </h2>
+            </div>
+
+            {/* Two columns: Classifications + Generated Spaceship */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-48 items-stretch">
               {/* Classification Statistics + Top Department */}
               <div className="space-y-6 h-full flex flex-col">
                 <DashboardStats data={data} />
@@ -193,7 +217,7 @@ export default function Dashboard() {
             </div>
 
             {/* 3D Spaceship Viewer */}
-            <div className="my-12 -mx-8">
+            <div className="my-48 -mx-8 mb-64">
               <Spaceship3D caseData={{
                 cas_numero: '1954-09-09112',
                 titre: 'Prémanon (39) - 27 septembre 1954',
@@ -223,6 +247,90 @@ export default function Dashboard() {
                   "Traces non identifiées comme du piétinement"
                 ]
               }} />
+            </div>
+
+            {/* Case 1951-06-00002 with Video */}
+            <div className="mt-64 mb-48">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                {/* Case Information */}
+                <div className="space-y-5 text-tech-white font-mono">
+                  {/* Language Toggle */}
+                  <div className="flex justify-end mb-4">
+                    <button
+                      onClick={() => setVideoSectionLang(videoSectionLang === 'FR' ? 'EN' : 'FR')}
+                      className="text-xs px-3 py-1 border border-tech text-tech-grey hover:text-tech-white hover:border-tech-bright transition-all uppercase tracking-wider"
+                    >
+                      [{videoSectionLang === 'FR' ? 'EN' : 'FR'}]
+                    </button>
+                  </div>
+
+                  {/* Case ID */}
+                  <div className="mb-6">
+                    <div className="text-tech-dim text-sm mb-2 uppercase tracking-wider">
+                      {tv('// CASE ID', '// CASE ID')}
+                    </div>
+                    <div className="text-tech-white text-xl font-bold">
+                      1951-06-00002
+                    </div>
+                  </div>
+
+                  {/* Description */}
+                  <div className="mb-6">
+                    <div className="text-tech-white text-sm leading-relaxed">
+                      {tv(
+                        "Le 15 juin 1951 à 11h30, deux pilotes militaires décollent de la base d'Orange-Caritat. Durant le vol, ils observent un phénomène aérospatial non identifié.",
+                        "On June 15, 1951 at 11:30 AM, two military pilots take off from the Orange-Caritat airbase. During the flight, they observe an unidentified aerospace phenomenon."
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Details */}
+                  <div>
+                    <div className="text-tech-dim text-xs mb-2 uppercase tracking-wider">
+                      {tv('// DÉTAILS', '// DETAILS')}
+                    </div>
+                    <div className="space-y-1 text-xs">
+                      <div className="flex">
+                        <span className="text-tech-dim w-28">{tv('Date:', 'Date:')}</span>
+                        <span className="text-tech-white flex-1">
+                          {tv('15 juin 1951, 11h30', 'June 15, 1951, 11:30 AM')}
+                        </span>
+                      </div>
+                      <div className="flex">
+                        <span className="text-tech-dim w-28">{tv('Lieu:', 'Location:')}</span>
+                        <span className="text-tech-white flex-1">
+                          {tv('Orange-Caritat (84)', 'Orange-Caritat (84), France')}
+                        </span>
+                      </div>
+                      <div className="flex">
+                        <span className="text-tech-dim w-28">{tv('Témoins:', 'Witnesses:')}</span>
+                        <span className="text-tech-white flex-1">
+                          {tv('Deux pilotes militaires', 'Two military pilots')}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Video */}
+                <div>
+                  <video
+                    className="w-full h-auto rounded"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    controls
+                  >
+                    <source src="/recreate_a_scene_set_on_june_15th_1951_at_11-30_am_two_military_pilots_take_off_from_the_orange-car_0vnf8rdi0ejvi6ip8edd_1.MP4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                  {/* AI Info Button - Below Video, Bottom Left */}
+                  <div className="mt-3">
+                    <AIInfoButton type="video" />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         )}

@@ -4,6 +4,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, useGLTF, Environment } from '@react-three/drei';
 import { Suspense, useState, useEffect, useRef } from 'react';
 import * as THREE from 'three';
+import AIInfoButton from '@/components/AIInfoButton';
 import '@/styles/technical-map.css';
 
 // Preload the model for better performance
@@ -60,7 +61,7 @@ function SpaceshipModel() {
     <primitive
       ref={modelRef}
       object={scene}
-      scale={2.2}
+      scale={1.8}
       position={[0, 0, 0]}
       rotation={[0, Math.PI / -3, -3]}
     />
@@ -114,6 +115,7 @@ function TypewriterText({ text, delay = 20 }: { text: string; delay?: number }) 
 export default function Spaceship3D({ caseData }: Spaceship3DProps) {
   const [error, setError] = useState(false);
   const [showText, setShowText] = useState(false);
+  const [language, setLanguage] = useState<'FR' | 'EN'>('FR');
 
   useEffect(() => {
     // Start text animation after a short delay
@@ -121,14 +123,48 @@ export default function Spaceship3D({ caseData }: Spaceship3DProps) {
     return () => clearTimeout(timer);
   }, []);
 
+  // Translation helper
+  const t = (fr: string, en: string) => language === 'EN' ? en : fr;
+
+  // Translate case data content
+  const translateContent = (text: string): string => {
+    if (language === 'FR') return text;
+
+    // Translation map for the Prémanon case
+    const translations: Record<string, string> = {
+      "Le 27 septembre 1954 à 20h30, trois enfants (de 12, 9 et 8 ans) observent à proximité de leur maison un engin étrange de couleur aluminium de forme rectangulaire fendu partiellement en son milieu dans le sens de la hauteur.":
+        "On September 27, 1954 at 8:30 PM, three children (aged 12, 9, and 8) observed near their home a strange aluminum-colored rectangular craft partially split in the middle along its height.",
+      "aluminium": "aluminum",
+      "rectangulaire": "rectangular",
+      "environ 2 mètres de haut sur 1 mètre de large": "approximately 2 meters high by 1 meter wide",
+      "Fendu partiellement en son milieu (dans le sens de la hauteur)": "Partially split in the middle (along its height)",
+      "Deux supports coudés de chaque côté à sa base (sortes de \"pieds\" extérieurs)": "Two bent supports on each side at its base (like exterior \"feet\")",
+      "Un enfant lance une pierre puis une fléchette contre l'engin": "A child throws a stone then a dart at the craft",
+      "L'engin s'avance lentement et renverse l'enfant": "The craft moves forward slowly and knocks down the child",
+      "L'enfant effrayé rentre chez lui": "The frightened child goes home",
+      "Deux sœurs verront également l'engin et iront se cacher": "Two sisters also saw the craft and went to hide",
+      "Aucun témoin ne verra l'engin disparaître": "No witness saw the craft disappear",
+      "Les sœurs ont vu une lueur rouge se balancer au ras du sol près de l'habitation": "The sisters saw a red glow swaying close to the ground near the house",
+      "Large couronne dans l'herbe couchée, orientée dans le sens des aiguilles d'une montre": "Large ring in flattened grass, oriented clockwise",
+      "Quatre trous dans cette couronne": "Four holes in this ring",
+      "Traces non identifiées comme du piétinement": "Traces not identified as trampling"
+    };
+
+    return translations[text] || text;
+  };
+
   return (
     <div className="w-full relative">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
         {/* 3D Canvas Container */}
         <div
-          className="relative w-full overflow-hidden"
+          className="relative w-full"
           style={{ height: '600px' }}
         >
+          {/* AI Info Button - Bottom Left */}
+          <div className="absolute bottom-3 left-3 z-10">
+            <AIInfoButton type="3d" />
+          </div>
         {error ? (
           <div className="h-full flex items-center justify-center">
             <div className="text-center">
@@ -138,7 +174,7 @@ export default function Spaceship3D({ caseData }: Spaceship3DProps) {
           </div>
         ) : (
           <Canvas
-            camera={{ position: [0, 0.5, 2], fov: 60 }}
+            camera={{ position: [0, 0.4, 2], fov: 60 }}
             style={{ background: '#000000' }}
             gl={{
               antialias: true,
@@ -178,30 +214,37 @@ export default function Spaceship3D({ caseData }: Spaceship3DProps) {
 
         {/* Case Data Display */}
         {caseData && showText && (
-          <div className="space-y-5 text-tech-white font-mono max-h-[600px] overflow-y-auto pr-4">
+          <div className="space-y-5 text-tech-white font-mono">
+            {/* Language Toggle */}
+            <div className="flex justify-end mb-4">
+              <button
+                onClick={() => setLanguage(language === 'FR' ? 'EN' : 'FR')}
+                className="text-xs px-3 py-1 border border-tech text-tech-grey hover:text-tech-white hover:border-tech-bright transition-all uppercase tracking-wider"
+              >
+                [{language === 'FR' ? 'EN' : 'FR'}]
+              </button>
+            </div>
+
             {/* Case ID and Title */}
-            <div className="border-b border-tech pb-3">
-              <div className="text-tech-dim text-xs mb-1 uppercase tracking-wider">
-                <TypewriterText text="// CASE ID" delay={30} />
+            <div className="mb-6">
+              <div className="text-tech-dim text-sm mb-2 uppercase tracking-wider">
+                <TypewriterText key={`case-id-${language}`} text={t("// CASE ID", "// CASE ID")} delay={30} />
               </div>
-              <div className="text-tech-white text-base font-bold">
-                <TypewriterText text={caseData.cas_numero || '1954-09-09112'} delay={40} />
+              <div className="text-tech-white text-xl font-bold">
+                <TypewriterText key={`case-num-${language}`} text={caseData.cas_numero || '1954-09-09112'} delay={40} />
               </div>
               {caseData.titre && (
-                <div className="text-tech-grey text-xs mt-1">
-                  <TypewriterText text={caseData.titre} delay={15} />
+                <div className="text-tech-grey text-sm mt-2">
+                  <TypewriterText key={`title-${language}`} text={caseData.titre} delay={15} />
                 </div>
               )}
             </div>
 
             {/* Témoignage Original */}
             {caseData.description_complete && (
-              <div>
-                <div className="text-tech-dim text-xs mb-2 uppercase tracking-wider">
-                  <TypewriterText text="// TÉMOIGNAGE ORIGINAL" delay={30} />
-                </div>
-                <div className="text-tech-grey text-xs leading-relaxed">
-                  <TypewriterText text={caseData.description_complete} delay={10} />
+              <div className="mb-6">
+                <div className="text-tech-white text-sm leading-relaxed">
+                  <TypewriterText key={`temoignage-${language}`} text={translateContent(caseData.description_complete)} delay={10} />
                 </div>
               </div>
             )}
@@ -210,30 +253,30 @@ export default function Spaceship3D({ caseData }: Spaceship3DProps) {
             {caseData.caracteristiques && (
               <div>
                 <div className="text-tech-dim text-xs mb-2 uppercase tracking-wider">
-                  <TypewriterText text="// DESCRIPTION PHYSIQUE" delay={30} />
+                  <TypewriterText key={`carac-label-${language}`} text={t("// DESCRIPTION PHYSIQUE", "// PHYSICAL DESCRIPTION")} delay={30} />
                 </div>
                 <div className="space-y-1 text-xs">
                   {caseData.caracteristiques.couleur && (
                     <div className="flex">
-                      <span className="text-tech-dim w-28">Couleur:</span>
+                      <span className="text-tech-dim w-28">{t('Couleur:', 'Color:')}</span>
                       <span className="text-tech-white flex-1">
-                        <TypewriterText text={caseData.caracteristiques.couleur} delay={15} />
+                        <TypewriterText key={`couleur-${language}`} text={translateContent(caseData.caracteristiques.couleur)} delay={15} />
                       </span>
                     </div>
                   )}
                   {caseData.caracteristiques.forme && (
                     <div className="flex">
-                      <span className="text-tech-dim w-28">Forme:</span>
+                      <span className="text-tech-dim w-28">{t('Forme:', 'Shape:')}</span>
                       <span className="text-tech-white flex-1">
-                        <TypewriterText text={caseData.caracteristiques.forme} delay={15} />
+                        <TypewriterText key={`forme-${language}`} text={translateContent(caseData.caracteristiques.forme)} delay={15} />
                       </span>
                     </div>
                   )}
                   {caseData.caracteristiques.dimensions && (
                     <div className="flex">
-                      <span className="text-tech-dim w-28">Dimensions:</span>
+                      <span className="text-tech-dim w-28">{t('Dimensions:', 'Dimensions:')}</span>
                       <span className="text-tech-white flex-1">
-                        <TypewriterText text={caseData.caracteristiques.dimensions} delay={15} />
+                        <TypewriterText key={`dimensions-${language}`} text={translateContent(caseData.caracteristiques.dimensions)} delay={15} />
                       </span>
                     </div>
                   )}
@@ -241,7 +284,7 @@ export default function Spaceship3D({ caseData }: Spaceship3DProps) {
                     <div key={i} className="flex">
                       <span className="text-tech-dim mr-2">•</span>
                       <span className="text-tech-grey flex-1">
-                        <TypewriterText text={detail} delay={12} />
+                        <TypewriterText key={`detail-${i}-${language}`} text={translateContent(detail)} delay={12} />
                       </span>
                     </div>
                   ))}
@@ -253,14 +296,14 @@ export default function Spaceship3D({ caseData }: Spaceship3DProps) {
             {caseData.comportement && caseData.comportement.length > 0 && (
               <div>
                 <div className="text-tech-dim text-xs mb-2 uppercase tracking-wider">
-                  <TypewriterText text="// COMPORTEMENT OBSERVÉ" delay={30} />
+                  <TypewriterText key={`comportement-label-${language}`} text={t("// COMPORTEMENT OBSERVÉ", "// OBSERVED BEHAVIOR")} delay={30} />
                 </div>
                 <div className="space-y-1 text-xs">
                   {caseData.comportement.map((item, i) => (
                     <div key={i} className="flex">
                       <span className="text-tech-dim mr-2">•</span>
                       <span className="text-tech-grey flex-1">
-                        <TypewriterText text={item} delay={12} />
+                        <TypewriterText key={`comportement-${i}-${language}`} text={translateContent(item)} delay={12} />
                       </span>
                     </div>
                   ))}
@@ -272,14 +315,14 @@ export default function Spaceship3D({ caseData }: Spaceship3DProps) {
             {caseData.phenomenes && caseData.phenomenes.length > 0 && (
               <div>
                 <div className="text-tech-dim text-xs mb-2 uppercase tracking-wider">
-                  <TypewriterText text="// AUTRES PHÉNOMÈNES" delay={30} />
+                  <TypewriterText key={`phenomenes-label-${language}`} text={t("// AUTRES PHÉNOMÈNES", "// OTHER PHENOMENA")} delay={30} />
                 </div>
                 <div className="space-y-1 text-xs">
                   {caseData.phenomenes.map((item, i) => (
                     <div key={i} className="flex">
                       <span className="text-tech-dim mr-2">•</span>
                       <span className="text-tech-grey flex-1">
-                        <TypewriterText text={item} delay={12} />
+                        <TypewriterText key={`phenomenes-${i}-${language}`} text={translateContent(item)} delay={12} />
                       </span>
                     </div>
                   ))}
@@ -291,14 +334,14 @@ export default function Spaceship3D({ caseData }: Spaceship3DProps) {
             {caseData.traces && caseData.traces.length > 0 && (
               <div>
                 <div className="text-tech-dim text-xs mb-2 uppercase tracking-wider">
-                  <TypewriterText text="// TRACES AU SOL" delay={30} />
+                  <TypewriterText key={`traces-label-${language}`} text={t("// TRACES AU SOL", "// GROUND TRACES")} delay={30} />
                 </div>
                 <div className="space-y-1 text-xs">
                   {caseData.traces.map((item, i) => (
                     <div key={i} className="flex">
                       <span className="text-tech-dim mr-2">•</span>
                       <span className="text-tech-grey flex-1">
-                        <TypewriterText text={item} delay={12} />
+                        <TypewriterText key={`traces-${i}-${language}`} text={translateContent(item)} delay={12} />
                       </span>
                     </div>
                   ))}

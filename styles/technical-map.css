@@ -87,7 +87,7 @@
 
 .terminal-button:hover {
   background: #FFFFFF;
-  color: #000000;
+  color: #0d0d0d;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
@@ -103,7 +103,7 @@
 /* Terminal-style input */
 .terminal-input {
   font-family: 'JetBrains Mono', monospace;
-  background: #000000;
+  background: #0d0d0d;
   border: 1px solid #666666;
   color: #FFFFFF;
   padding: 0.5rem;
@@ -122,7 +122,7 @@
   width: 1rem;
   height: 1rem;
   border: 1px solid #CCCCCC;
-  background: #000000;
+  background: #0d0d0d;
   cursor: pointer;
   position: relative;
   transition: all 0.2s ease;
@@ -138,7 +138,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: #000000;
+  color: #0d0d0d;
   font-size: 0.75rem;
   font-weight: bold;
 }
@@ -215,7 +215,7 @@
 /* Tooltip styling */
 .map-tooltip {
   position: absolute;
-  background: #000000;
+  background: #0d0d0d;
   border: 2px solid #FFFFFF;
   padding: 1rem;
   font-family: 'JetBrains Mono', monospace;
@@ -230,7 +230,7 @@
 
 /* Legend styling */
 .map-legend {
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(13, 13, 13, 0.9);
   border: 1px solid #CCCCCC;
   padding: 1rem;
   font-family: 'JetBrains Mono', monospace;
@@ -263,7 +263,7 @@
 
 /* Control panel styling */
 .control-panel {
-  background: rgba(0, 0, 0, 0.95);
+  background: rgba(13, 13, 13, 0.95);
   border: 1px solid #666666;
   padding: 1.5rem;
   font-family: 'JetBrains Mono', monospace;
@@ -368,6 +368,10 @@
 /* Utility classes */
 .text-mono {
   font-family: 'JetBrains Mono', monospace;
+}
+
+.text-body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 .border-tech {

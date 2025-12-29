@@ -91,7 +91,7 @@ export default function CasDetailModal({ cas, onClose }: CasDetailModalProps) {
               <h3 className="text-xs font-bold text-tech-grey mb-3 uppercase tracking-wider border-t border-tech pt-4">
                 // RÉSUMÉ
               </h3>
-              <p className="text-xs text-tech-white leading-relaxed font-mono">{cas.resumeCourt}</p>
+              <p className="text-sm text-tech-white leading-relaxed text-body">{cas.resumeCourt}</p>
             </div>
           )}
 
@@ -126,7 +126,7 @@ export default function CasDetailModal({ cas, onClose }: CasDetailModalProps) {
                           <span className="text-tech-dim font-medium uppercase">
                             FORME:
                           </span>
-                          <p className="text-tech-white mt-1 font-mono">{temoignage.forme}</p>
+                          <p className="text-tech-white mt-1 text-body text-sm">{temoignage.forme}</p>
                         </div>
                       )}
                       {temoignage.couleur && (
@@ -134,7 +134,7 @@ export default function CasDetailModal({ cas, onClose }: CasDetailModalProps) {
                           <span className="text-tech-dim font-medium uppercase">
                             COULEUR:
                           </span>
-                          <p className="text-tech-white mt-1 font-mono">{temoignage.couleur}</p>
+                          <p className="text-tech-white mt-1 text-body text-sm">{temoignage.couleur}</p>
                         </div>
                       )}
                       {temoignage.taille && (
@@ -142,7 +142,7 @@ export default function CasDetailModal({ cas, onClose }: CasDetailModalProps) {
                           <span className="text-tech-dim font-medium uppercase">
                             TAILLE:
                           </span>
-                          <p className="text-tech-white mt-1 font-mono">{temoignage.taille}</p>
+                          <p className="text-tech-white mt-1 text-body text-sm">{temoignage.taille}</p>
                         </div>
                       )}
                       {temoignage.vitesse && (
@@ -150,7 +150,7 @@ export default function CasDetailModal({ cas, onClose }: CasDetailModalProps) {
                           <span className="text-tech-dim font-medium uppercase">
                             VITESSE:
                           </span>
-                          <p className="text-tech-white mt-1 font-mono">{temoignage.vitesse}</p>
+                          <p className="text-tech-white mt-1 text-body text-sm">{temoignage.vitesse}</p>
                         </div>
                       )}
                       {temoignage.heure && (
@@ -158,7 +158,7 @@ export default function CasDetailModal({ cas, onClose }: CasDetailModalProps) {
                           <span className="text-tech-dim font-medium uppercase">
                             HEURE:
                           </span>
-                          <p className="text-tech-white mt-1 font-mono">{temoignage.heure}</p>
+                          <p className="text-tech-white mt-1 text-body text-sm">{temoignage.heure}</p>
                         </div>
                       )}
                       {temoignage.trajectoire && (
@@ -166,7 +166,7 @@ export default function CasDetailModal({ cas, onClose }: CasDetailModalProps) {
                           <span className="text-tech-dim font-medium uppercase">
                             TRAJECTOIRE:
                           </span>
-                          <p className="text-tech-white mt-1 font-mono">{temoignage.trajectoire}</p>
+                          <p className="text-tech-white mt-1 text-body text-sm">{temoignage.trajectoire}</p>
                         </div>
                       )}
                       {temoignage.apparence && (
@@ -174,7 +174,7 @@ export default function CasDetailModal({ cas, onClose }: CasDetailModalProps) {
                           <span className="text-tech-dim font-medium uppercase">
                             APPARENCE:
                           </span>
-                          <p className="text-tech-white mt-1 font-mono">{temoignage.apparence}</p>
+                          <p className="text-tech-white mt-1 text-body text-sm">{temoignage.apparence}</p>
                         </div>
                       )}
                       {temoignage.meteo && (
@@ -182,7 +182,7 @@ export default function CasDetailModal({ cas, onClose }: CasDetailModalProps) {
                           <span className="text-tech-dim font-medium uppercase">
                             MÉTÉO:
                           </span>
-                          <p className="text-tech-white mt-1 font-mono">{temoignage.meteo}</p>
+                          <p className="text-tech-white mt-1 text-body text-sm">{temoignage.meteo}</p>
                         </div>
                       )}
                     </div>
@@ -199,7 +199,7 @@ export default function CasDetailModal({ cas, onClose }: CasDetailModalProps) {
                 // DESCRIPTION DÉTAILLÉE
               </h3>
               <div
-                className="text-xs text-tech-white leading-relaxed prose-sm max-w-none font-mono"
+                className="text-sm text-tech-white leading-relaxed prose-sm max-w-none text-body"
                 dangerouslySetInnerHTML={{ __html: cas.descriptionDetaillee }}
                 style={{
                   color: '#FFFFFF'
