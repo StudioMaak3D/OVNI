@@ -3,6 +3,7 @@
 import type { CasAvecTemoignages } from '@/lib/dataParser';
 import { aggregateCasesByDepartment, getMaxCaseCount } from '@/lib/mapDataAggregator';
 import { createLinearColorScale } from '@/lib/mapUtils';
+import { BASE_PATH } from '@/lib/config';
 import { useMemo } from 'react';
 import Link from 'next/link';
 import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
@@ -12,7 +13,7 @@ interface MapPreviewProps {
   data: CasAvecTemoignages[];
 }
 
-const geoUrl = '/geojson/france-departments.geojson';
+const geoUrl = `${BASE_PATH}/geojson/france-departments.geojson`;
 
 export default function MapPreview({ data }: MapPreviewProps) {
   // Aggregate data by department

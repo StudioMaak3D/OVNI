@@ -4,8 +4,9 @@ import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
 import { useMemo } from 'react';
 import type { DepartmentData } from '@/lib/mapDataAggregator';
 import { createChoroplethColorScale } from '@/lib/mapUtils';
+import { BASE_PATH } from '@/lib/config';
 
-const geoUrl = '/geojson/france-departments.geojson';
+const geoUrl = `${BASE_PATH}/geojson/france-departments.geojson`;
 
 interface FranceMapProps {
   departmentData: Map<string, DepartmentData>;

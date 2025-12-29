@@ -325,7 +325,7 @@ export default function Dashboard() {
                     playsInline
                     controls
                   >
-                    <source src="/demo-1951-case.mp4" type="video/mp4" />
+                    <source src={`${BASE_PATH}/demo-1951-case.mp4`} type="video/mp4" />
                     Your browser does not support the video tag.
                   </video>
                   {/* AI Info Button - Below Video, Bottom Left */}

@@ -5,13 +5,14 @@ import { OrbitControls, useGLTF, Environment } from '@react-three/drei';
 import { Suspense, useState, useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import AIInfoButton from '@/components/AIInfoButton';
+import { BASE_PATH } from '@/lib/config';
 import '@/styles/technical-map.css';
 
 // Preload the model for better performance
-useGLTF.preload('/vaisseaux/vaisseaux_model/futuristic gun 3d model.glb');
+useGLTF.preload(`${BASE_PATH}/vaisseaux/vaisseaux_model/futuristic gun 3d model.glb`);
 
 function SpaceshipModel() {
-  const { scene } = useGLTF('/vaisseaux/vaisseaux_model/futuristic gun 3d model.glb');
+  const { scene } = useGLTF(`${BASE_PATH}/vaisseaux/vaisseaux_model/futuristic gun 3d model.glb`);
   const modelRef = useRef<THREE.Group>(null);
 
   useEffect(() => {
@@ -51,7 +52,7 @@ function SpaceshipModel() {
   }, [scene]);
 
   // Auto rotation
-  useFrame((state, delta) => {
+  useFrame((_state, delta) => {
     if (modelRef.current) {
       modelRef.current.rotation.y += delta * 0.2;
     }
