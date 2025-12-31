@@ -108,32 +108,12 @@ export default function MapControls({ filters, onFiltersChange }: MapControlsPro
 
           {/* Year range filter */}
           <div>
-            <div className="text-tech-grey text-xs mb-2">
+            <div className="text-tech-grey text-xs mb-3">
               YEAR RANGE: {filters.yearRange[0]} - {filters.yearRange[1]}
             </div>
-            <div className="relative pt-2 pb-4">
-              {/* Min slider */}
-              <input
-                type="range"
-                min={MIN_YEAR}
-                max={MAX_YEAR}
-                value={filters.yearRange[0]}
-                onChange={(e) => handleYearChange(0, parseInt(e.target.value))}
-                className="absolute w-full accent-white pointer-events-auto"
-                style={{ zIndex: filters.yearRange[0] > MAX_YEAR - 10 ? 2 : 1 }}
-              />
-              {/* Max slider */}
-              <input
-                type="range"
-                min={MIN_YEAR}
-                max={MAX_YEAR}
-                value={filters.yearRange[1]}
-                onChange={(e) => handleYearChange(1, parseInt(e.target.value))}
-                className="absolute w-full accent-white pointer-events-auto"
-                style={{ zIndex: filters.yearRange[1] < MIN_YEAR + 10 ? 2 : 1 }}
-              />
-              {/* Visual range indicator */}
-              <div className="relative w-full h-1 bg-tech-dim rounded mt-2">
+            <div className="relative h-8">
+              {/* Visual range indicator - positioned behind sliders */}
+              <div className="absolute w-full top-1/2 -translate-y-1/2 h-1 bg-tech-dim rounded">
                 <div
                   className="absolute h-1 bg-white rounded"
                   style={{
@@ -142,6 +122,26 @@ export default function MapControls({ filters, onFiltersChange }: MapControlsPro
                   }}
                 />
               </div>
+              {/* Max slider (background layer) */}
+              <input
+                type="range"
+                min={MIN_YEAR}
+                max={MAX_YEAR}
+                value={filters.yearRange[1]}
+                onChange={(e) => handleYearChange(1, parseInt(e.target.value))}
+                className="absolute w-full top-1/2 -translate-y-1/2"
+                style={{ zIndex: 1 }}
+              />
+              {/* Min slider (foreground layer) */}
+              <input
+                type="range"
+                min={MIN_YEAR}
+                max={MAX_YEAR}
+                value={filters.yearRange[0]}
+                onChange={(e) => handleYearChange(0, parseInt(e.target.value))}
+                className="absolute w-full top-1/2 -translate-y-1/2"
+                style={{ zIndex: 2 }}
+              />
             </div>
           </div>
 

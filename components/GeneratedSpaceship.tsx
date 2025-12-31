@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import type { CasAvecTemoignages } from '@/lib/dataParser';
 import { getClassificationColor } from '@/lib/mapUtils';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { BASE_PATH } from '@/lib/config';
 import AIInfoButton from '@/components/AIInfoButton';
 
@@ -16,6 +17,7 @@ interface GeneratedSpaceshipProps {
 export default function GeneratedSpaceship({ caseId, data }: GeneratedSpaceshipProps) {
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const { t } = useLanguage();
 
   // Find case details if data is provided
   const caseData = data?.find(c => c.id === caseId);
@@ -31,7 +33,7 @@ export default function GeneratedSpaceship({ caseId, data }: GeneratedSpaceshipP
             <>
               <div>
                 <div className="text-tech-dim text-xs uppercase tracking-wider mb-1">
-                  LOCATION
+                  {t('LIEU', 'LOCATION')}
                 </div>
                 <div className="text-tech-white text-xs">
                   {caseData.titre.split(' - ')[0]}
@@ -39,7 +41,7 @@ export default function GeneratedSpaceship({ caseId, data }: GeneratedSpaceshipP
               </div>
               <div className="text-right">
                 <div className="text-tech-dim text-xs uppercase tracking-wider mb-1">
-                  CATEGORY
+                  {t('CATÉGORIE', 'CATEGORY')}
                 </div>
                 <div
                   className="text-xs font-bold"
@@ -51,7 +53,7 @@ export default function GeneratedSpaceship({ caseId, data }: GeneratedSpaceshipP
             </>
           ) : (
             <div className="text-tech-dim text-xs uppercase tracking-wider">
-              CASE {caseId}
+              {t('CAS', 'CASE')} {caseId}
             </div>
           )}
         </div>
@@ -61,7 +63,7 @@ export default function GeneratedSpaceship({ caseId, data }: GeneratedSpaceshipP
         {imageError ? (
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center">
-              <div className="text-tech-grey text-xs mb-2">IMAGE NOT FOUND</div>
+              <div className="text-tech-grey text-xs mb-2">{t('IMAGE NON TROUVÉE', 'IMAGE NOT FOUND')}</div>
               <div className="text-tech-dim text-xs">{imagePath}</div>
             </div>
           </div>
@@ -88,7 +90,7 @@ export default function GeneratedSpaceship({ caseId, data }: GeneratedSpaceshipP
           {/* Case Number */}
           <div className="pt-2">
             <div className="text-tech-dim text-xs uppercase tracking-wider mb-1">
-              CASE ID
+              {t('CAS ID', 'CASE ID')}
             </div>
             <div className="text-tech-grey text-xs font-mono">
               {caseId}

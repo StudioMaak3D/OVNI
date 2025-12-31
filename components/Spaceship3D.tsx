@@ -5,6 +5,7 @@ import { OrbitControls, useGLTF, Environment } from '@react-three/drei';
 import { Suspense, useState, useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import AIInfoButton from '@/components/AIInfoButton';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { BASE_PATH } from '@/lib/config';
 import '@/styles/technical-map.css';
 
@@ -116,17 +117,14 @@ function TypewriterText({ text, delay = 20 }: { text: string; delay?: number }) 
 export default function Spaceship3D({ caseData }: Spaceship3DProps) {
   const [error, setError] = useState(false);
   const [showText, setShowText] = useState(false);
-  const [language, setLanguage] = useState<'FR' | 'EN'>('FR');
   const [showControls, setShowControls] = useState(false);
+  const { language, t } = useLanguage();
 
   useEffect(() => {
     // Start text animation after a short delay
     const timer = setTimeout(() => setShowText(true), 500);
     return () => clearTimeout(timer);
   }, []);
-
-  // Translation helper
-  const t = (fr: string, en: string) => language === 'EN' ? en : fr;
 
   // Translate case data content
   const translateContent = (text: string): string => {
@@ -287,16 +285,6 @@ export default function Spaceship3D({ caseData }: Spaceship3DProps) {
         {/* Case Data Display */}
         {caseData && showText && (
           <div className="space-y-5 text-tech-white font-mono">
-            {/* Language Toggle */}
-            <div className="flex justify-end mb-4">
-              <button
-                onClick={() => setLanguage(language === 'FR' ? 'EN' : 'FR')}
-                className="text-xs px-3 py-1 border border-tech text-tech-grey hover:text-tech-white hover:border-tech-bright transition-all uppercase tracking-wider"
-              >
-                [{language === 'FR' ? 'EN' : 'FR'}]
-              </button>
-            </div>
-
             {/* Case ID and Title */}
             <div className="mb-6">
               <div className="text-tech-dim text-sm mb-2 uppercase tracking-wider">

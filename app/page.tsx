@@ -10,18 +10,17 @@ import GeneratedSpaceship from '@/components/GeneratedSpaceship';
 import Spaceship3D from '@/components/Spaceship3D';
 import Navbar from '@/components/Navbar';
 import AIInfoButton from '@/components/AIInfoButton';
+import LanguageToggle from '@/components/LanguageToggle';
 import { getDepartmentName } from '@/lib/mapUtils';
+import { useLanguage } from '@/contexts/LanguageContext';
 import '@/styles/technical-map.css';
 
 export default function Dashboard() {
   const [data, setData] = useState<CasAvecTemoignages[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [videoSectionLang, setVideoSectionLang] = useState<'FR' | 'EN'>('FR');
   const stats = useStats(data);
-
-  // Translation helper for video section
-  const tv = (fr: string, en: string) => videoSectionLang === 'EN' ? en : fr;
+  const { t } = useLanguage();
 
   // Load data from CSV file
   useEffect(() => {
@@ -53,6 +52,9 @@ export default function Dashboard() {
     <main className="technical-map min-h-screen">
       {/* Navigation Header */}
       <Navbar />
+
+      {/* Language Toggle */}
+      <LanguageToggle />
 
       {/* Main content with top padding for fixed nav */}
       <div className="pt-16 min-h-screen">
@@ -88,8 +90,10 @@ export default function Dashboard() {
                 OVNI EXPLORER
               </h1>
               <p className="text-tech-grey text-xl leading-relaxed">
-                Explore and visualize French OVNI (UFO) observations from GEIPAN (Groupe d&apos;Études et d&apos;Informations sur les Phénomènes Aérospatiaux Non-identifiés).
-                Navigate through decades of witness testimonies, analyze sighting patterns, and generate AI reconstructions from detailed descriptions.
+                {t(
+                  "Explorez et visualisez les observations d'OVNI françaises du GEIPAN (Groupe d'Études et d'Informations sur les Phénomènes Aérospatiaux Non-identifiés). Naviguez à travers des décennies de témoignages, analysez les modèles d'observations et générez des reconstructions IA à partir de descriptions détaillées.",
+                  "Explore and visualize French OVNI (UFO) observations from GEIPAN (Groupe d'Études et d'Informations sur les Phénomènes Aérospatiaux Non-identifiés). Navigate through decades of witness testimonies, analyze sighting patterns, and generate AI reconstructions from detailed descriptions."
+                )}
               </p>
             </div>
 
@@ -97,7 +101,7 @@ export default function Dashboard() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-40">
               {/* Total Cases */}
               <div className="control-panel bg-tech-dark border-tech text-center">
-                <div className="text-tech-dim text-xs mb-2 uppercase tracking-wider">CASES</div>
+                <div className="text-tech-dim text-xs mb-2 uppercase tracking-wider">{t('CAS', 'CASES')}</div>
                 <div className="text-tech-white text-4xl md:text-5xl case-count font-bold mb-1">
                   {stats.totalCases.toLocaleString()}
                 </div>
@@ -105,7 +109,7 @@ export default function Dashboard() {
 
               {/* Total Testimonies */}
               <div className="control-panel bg-tech-dark border-tech text-center">
-                <div className="text-tech-dim text-xs mb-2 uppercase tracking-wider">TESTIMONIES</div>
+                <div className="text-tech-dim text-xs mb-2 uppercase tracking-wider">{t('TÉMOIGNAGES', 'TESTIMONIES')}</div>
                 <div className="text-tech-white text-4xl md:text-5xl case-count font-bold mb-1">
                   {stats.totalTestimonies.toLocaleString()}
                 </div>
@@ -113,16 +117,16 @@ export default function Dashboard() {
 
               {/* Time Span */}
               <div className="control-panel bg-tech-dark border-tech text-center">
-                <div className="text-tech-dim text-xs mb-2 uppercase tracking-wider">TIME SPAN</div>
+                <div className="text-tech-dim text-xs mb-2 uppercase tracking-wider">{t('PÉRIODE', 'TIME SPAN')}</div>
                 <div className="text-tech-white text-4xl md:text-5xl case-count font-bold mb-1">
                   {stats.yearSpan}
                 </div>
-                <div className="text-tech-grey text-xs">YEARS</div>
+                <div className="text-tech-grey text-xs">{t('ANS', 'YEARS')}</div>
               </div>
 
               {/* Period */}
               <div className="control-panel bg-tech-dark border-tech text-center">
-                <div className="text-tech-dim text-xs mb-2 uppercase tracking-wider">PERIOD</div>
+                <div className="text-tech-dim text-xs mb-2 uppercase tracking-wider">{t('PÉRIODE', 'PERIOD')}</div>
                 <div className="text-tech-white text-xl md:text-2xl case-count font-bold">
                   {stats.minYear}
                 </div>
@@ -141,7 +145,7 @@ export default function Dashboard() {
             {/* Explore Cases Title */}
             <div className="mb-16 text-center">
               <h2 className="text-3xl font-bold text-tech-white uppercase tracking-wider terminal-text">
-                EXPLORE CASES
+                {t('EXPLORER LES CAS', 'EXPLORE CASES')}
               </h2>
             </div>
 
@@ -157,7 +161,7 @@ export default function Dashboard() {
                     <div className="flex items-center justify-between">
                       <div>
                         <div className="text-tech-dim text-xs mb-1 uppercase tracking-wider">
-                          TOP DEPARTMENT
+                          {t('TOP DÉPARTEMENT', 'TOP DEPARTMENT')}
                         </div>
                         <div className="text-tech-white text-xl font-bold uppercase">
                           {stats.topDept.code} - {getDepartmentName(stats.topDept.code)}
@@ -165,7 +169,7 @@ export default function Dashboard() {
                       </div>
                       <div className="text-right">
                         <div className="text-tech-dim text-xs mb-1 uppercase tracking-wider">
-                          CASES
+                          {t('CAS', 'CASES')}
                         </div>
                         <div className="text-tech-white text-3xl case-count font-bold">
                           {stats.topDept.totalCases.toLocaleString()}
@@ -220,20 +224,10 @@ export default function Dashboard() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
                 {/* Case Information */}
                 <div className="space-y-5 text-tech-white font-mono">
-                  {/* Language Toggle */}
-                  <div className="flex justify-end mb-4">
-                    <button
-                      onClick={() => setVideoSectionLang(videoSectionLang === 'FR' ? 'EN' : 'FR')}
-                      className="text-xs px-3 py-1 border border-tech text-tech-grey hover:text-tech-white hover:border-tech-bright transition-all uppercase tracking-wider"
-                    >
-                      [{videoSectionLang === 'FR' ? 'EN' : 'FR'}]
-                    </button>
-                  </div>
-
                   {/* Case ID */}
                   <div className="mb-6">
                     <div className="text-tech-dim text-sm mb-2 uppercase tracking-wider">
-                      {tv('// CASE ID', '// CASE ID')}
+                      {t('// CASE ID', '// CASE ID')}
                     </div>
                     <div className="text-tech-white text-xl font-bold">
                       1951-06-00002
@@ -243,7 +237,7 @@ export default function Dashboard() {
                   {/* Description */}
                   <div className="mb-6">
                     <div className="text-tech-white text-sm leading-relaxed">
-                      {tv(
+                      {t(
                         "Le 15 juin 1951 à 11h30, deux pilotes militaires décollent de la base d'Orange-Caritat. Durant le vol, ils observent un phénomène aérospatial non identifié.",
                         "On June 15, 1951 at 11:30 AM, two military pilots take off from the Orange-Caritat airbase. During the flight, they observe an unidentified aerospace phenomenon."
                       )}
@@ -253,25 +247,25 @@ export default function Dashboard() {
                   {/* Details */}
                   <div>
                     <div className="text-tech-dim text-xs mb-2 uppercase tracking-wider">
-                      {tv('// DÉTAILS', '// DETAILS')}
+                      {t('// DÉTAILS', '// DETAILS')}
                     </div>
                     <div className="space-y-1 text-xs">
                       <div className="flex">
-                        <span className="text-tech-dim w-28">{tv('Date:', 'Date:')}</span>
+                        <span className="text-tech-dim w-28">{t('Date:', 'Date:')}</span>
                         <span className="text-tech-white flex-1">
-                          {tv('15 juin 1951, 11h30', 'June 15, 1951, 11:30 AM')}
+                          {t('15 juin 1951, 11h30', 'June 15, 1951, 11:30 AM')}
                         </span>
                       </div>
                       <div className="flex">
-                        <span className="text-tech-dim w-28">{tv('Lieu:', 'Location:')}</span>
+                        <span className="text-tech-dim w-28">{t('Lieu:', 'Location:')}</span>
                         <span className="text-tech-white flex-1">
-                          {tv('Orange-Caritat (84)', 'Orange-Caritat (84), France')}
+                          {t('Orange-Caritat (84)', 'Orange-Caritat (84), France')}
                         </span>
                       </div>
                       <div className="flex">
-                        <span className="text-tech-dim w-28">{tv('Témoins:', 'Witnesses:')}</span>
+                        <span className="text-tech-dim w-28">{t('Témoins:', 'Witnesses:')}</span>
                         <span className="text-tech-white flex-1">
-                          {tv('Deux pilotes militaires', 'Two military pilots')}
+                          {t('Deux pilotes militaires', 'Two military pilots')}
                         </span>
                       </div>
                     </div>
