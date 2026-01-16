@@ -59,7 +59,7 @@ export default function GeneratedSpaceship({ caseId, data }: GeneratedSpaceshipP
         </div>
 
       {/* Image Container */}
-      <div className="relative w-full flex-[3] bg-black rounded overflow-hidden mb-3">
+      <div className="relative w-full min-h-[200px] flex-[3] bg-black rounded overflow-hidden mb-3">
         {imageError ? (
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center">

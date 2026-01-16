@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
+import { useLanguage } from '@/contexts/LanguageContext';
 import '@/styles/technical-map.css';
 
 interface AboutModalProps {
@@ -9,7 +10,7 @@ interface AboutModalProps {
 }
 
 export default function AboutModal({ isOpen, onClose }: AboutModalProps) {
-  const [language, setLanguage] = useState<'FR' | 'EN'>('FR');
+  const { language, setLanguage, t } = useLanguage();
 
   // Close on Escape key
   useEffect(() => {
@@ -23,8 +24,6 @@ export default function AboutModal({ isOpen, onClose }: AboutModalProps) {
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
-
-  const t = (fr: string, en: string) => language === 'EN' ? en : fr;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80">

@@ -95,36 +95,10 @@ interface Spaceship3DProps {
   };
 }
 
-// Animated text component
-function TypewriterText({ text, delay = 20 }: { text: string; delay?: number }) {
-  const [displayedText, setDisplayedText] = useState('');
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  useEffect(() => {
-    if (currentIndex < text.length) {
-      const timeout = setTimeout(() => {
-        setDisplayedText(prev => prev + text[currentIndex]);
-        setCurrentIndex(prev => prev + 1);
-      }, delay);
-
-      return () => clearTimeout(timeout);
-    }
-  }, [currentIndex, text, delay]);
-
-  return <span>{displayedText}</span>;
-}
-
 export default function Spaceship3D({ caseData }: Spaceship3DProps) {
   const [error, setError] = useState(false);
-  const [showText, setShowText] = useState(false);
   const [showControls, setShowControls] = useState(false);
   const { language, t } = useLanguage();
-
-  useEffect(() => {
-    // Start text animation after a short delay
-    const timer = setTimeout(() => setShowText(true), 500);
-    return () => clearTimeout(timer);
-  }, []);
 
   // Translate case data content
   const translateContent = (text: string): string => {
@@ -283,19 +257,19 @@ export default function Spaceship3D({ caseData }: Spaceship3DProps) {
         </div>
 
         {/* Case Data Display */}
-        {caseData && showText && (
+        {caseData && (
           <div className="space-y-5 text-tech-white font-mono">
             {/* Case ID and Title */}
             <div className="mb-6">
               <div className="text-tech-dim text-sm mb-2 uppercase tracking-wider">
-                <TypewriterText key={`case-id-${language}`} text={t("// CASE ID", "// CASE ID")} delay={30} />
+                {t("// CASE ID", "// CASE ID")}
               </div>
               <div className="text-tech-white text-xl font-bold">
-                <TypewriterText key={`case-num-${language}`} text={caseData.cas_numero || '1954-09-09112'} delay={40} />
+                {caseData.cas_numero || '1954-09-09112'}
               </div>
               {caseData.titre && (
                 <div className="text-tech-grey text-sm mt-2">
-                  <TypewriterText key={`title-${language}`} text={caseData.titre} delay={15} />
+                  {caseData.titre}
                 </div>
               )}
             </div>
@@ -304,7 +278,7 @@ export default function Spaceship3D({ caseData }: Spaceship3DProps) {
             {caseData.description_complete && (
               <div className="mb-6">
                 <div className="text-tech-white text-sm leading-relaxed">
-                  <TypewriterText key={`temoignage-${language}`} text={translateContent(caseData.description_complete)} delay={10} />
+                  {translateContent(caseData.description_complete)}
                 </div>
               </div>
             )}
@@ -313,14 +287,14 @@ export default function Spaceship3D({ caseData }: Spaceship3DProps) {
             {caseData.caracteristiques && (
               <div>
                 <div className="text-tech-dim text-xs mb-2 uppercase tracking-wider">
-                  <TypewriterText key={`carac-label-${language}`} text={t("// DESCRIPTION PHYSIQUE", "// PHYSICAL DESCRIPTION")} delay={30} />
+                  {t("// DESCRIPTION PHYSIQUE", "// PHYSICAL DESCRIPTION")}
                 </div>
                 <div className="space-y-1 text-xs">
                   {caseData.caracteristiques.couleur && (
                     <div className="flex">
                       <span className="text-tech-dim w-28">{t('Couleur:', 'Color:')}</span>
                       <span className="text-tech-white flex-1">
-                        <TypewriterText key={`couleur-${language}`} text={translateContent(caseData.caracteristiques.couleur)} delay={15} />
+                        {translateContent(caseData.caracteristiques.couleur)}
                       </span>
                     </div>
                   )}
@@ -328,7 +302,7 @@ export default function Spaceship3D({ caseData }: Spaceship3DProps) {
                     <div className="flex">
                       <span className="text-tech-dim w-28">{t('Forme:', 'Shape:')}</span>
                       <span className="text-tech-white flex-1">
-                        <TypewriterText key={`forme-${language}`} text={translateContent(caseData.caracteristiques.forme)} delay={15} />
+                        {translateContent(caseData.caracteristiques.forme)}
                       </span>
                     </div>
                   )}
@@ -336,7 +310,7 @@ export default function Spaceship3D({ caseData }: Spaceship3DProps) {
                     <div className="flex">
                       <span className="text-tech-dim w-28">{t('Dimensions:', 'Dimensions:')}</span>
                       <span className="text-tech-white flex-1">
-                        <TypewriterText key={`dimensions-${language}`} text={translateContent(caseData.caracteristiques.dimensions)} delay={15} />
+                        {translateContent(caseData.caracteristiques.dimensions)}
                       </span>
                     </div>
                   )}
@@ -344,7 +318,7 @@ export default function Spaceship3D({ caseData }: Spaceship3DProps) {
                     <div key={i} className="flex">
                       <span className="text-tech-dim mr-2">•</span>
                       <span className="text-tech-grey flex-1">
-                        <TypewriterText key={`detail-${i}-${language}`} text={translateContent(detail)} delay={12} />
+                        {translateContent(detail)}
                       </span>
                     </div>
                   ))}
@@ -356,14 +330,14 @@ export default function Spaceship3D({ caseData }: Spaceship3DProps) {
             {caseData.comportement && caseData.comportement.length > 0 && (
               <div>
                 <div className="text-tech-dim text-xs mb-2 uppercase tracking-wider">
-                  <TypewriterText key={`comportement-label-${language}`} text={t("// COMPORTEMENT OBSERVÉ", "// OBSERVED BEHAVIOR")} delay={30} />
+                  {t("// COMPORTEMENT OBSERVÉ", "// OBSERVED BEHAVIOR")}
                 </div>
                 <div className="space-y-1 text-xs">
                   {caseData.comportement.map((item, i) => (
                     <div key={i} className="flex">
                       <span className="text-tech-dim mr-2">•</span>
                       <span className="text-tech-grey flex-1">
-                        <TypewriterText key={`comportement-${i}-${language}`} text={translateContent(item)} delay={12} />
+                        {translateContent(item)}
                       </span>
                     </div>
                   ))}
@@ -375,14 +349,14 @@ export default function Spaceship3D({ caseData }: Spaceship3DProps) {
             {caseData.phenomenes && caseData.phenomenes.length > 0 && (
               <div>
                 <div className="text-tech-dim text-xs mb-2 uppercase tracking-wider">
-                  <TypewriterText key={`phenomenes-label-${language}`} text={t("// AUTRES PHÉNOMÈNES", "// OTHER PHENOMENA")} delay={30} />
+                  {t("// AUTRES PHÉNOMÈNES", "// OTHER PHENOMENA")}
                 </div>
                 <div className="space-y-1 text-xs">
                   {caseData.phenomenes.map((item, i) => (
                     <div key={i} className="flex">
                       <span className="text-tech-dim mr-2">•</span>
                       <span className="text-tech-grey flex-1">
-                        <TypewriterText key={`phenomenes-${i}-${language}`} text={translateContent(item)} delay={12} />
+                        {translateContent(item)}
                       </span>
                     </div>
                   ))}
@@ -394,14 +368,14 @@ export default function Spaceship3D({ caseData }: Spaceship3DProps) {
             {caseData.traces && caseData.traces.length > 0 && (
               <div>
                 <div className="text-tech-dim text-xs mb-2 uppercase tracking-wider">
-                  <TypewriterText key={`traces-label-${language}`} text={t("// TRACES AU SOL", "// GROUND TRACES")} delay={30} />
+                  {t("// TRACES AU SOL", "// GROUND TRACES")}
                 </div>
                 <div className="space-y-1 text-xs">
                   {caseData.traces.map((item, i) => (
                     <div key={i} className="flex">
                       <span className="text-tech-dim mr-2">•</span>
                       <span className="text-tech-grey flex-1">
-                        <TypewriterText key={`traces-${i}-${language}`} text={translateContent(item)} delay={12} />
+                        {translateContent(item)}
                       </span>
                     </div>
                   ))}
